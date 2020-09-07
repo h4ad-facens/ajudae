@@ -34,7 +34,7 @@ O usuário vai navegar por uma aba de causas e selecionar a que mais se identifi
 
 O layout foi inspirado no [Marvie](https://www.figma.com/community/file/827876058453173134) e no [Ant Design Figma](https://www.figma.com/community/file/831698976089873405) e pode ser encontrado [clicando aqui.](https://www.figma.com/file/Rkp7yCgFeqRta3xLt3QEBn/Ajuda%C3%AA?node-id=1%3A11075) Lembrando que você irá precisar ter uma conta no [Figma](http://figma.com/).
 
-## Documentação
+## :book: Documentação
 
 A documentação desse projeto com as funcionalidades está especificado no Notion, para você acessar, [clique aqui](https://www.notion.so/Ajuda-e45e128915ea46249dcc45c065ba6478).
 
