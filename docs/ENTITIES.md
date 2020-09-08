@@ -2,7 +2,7 @@
 
 Abaixo, o diagrama das entidades que irão existir para suportar todos os dados exibidos no aplicativo.
 
-> Se você não conseguir visualizar o diagrama, por favor, instale a seguinte extensão [clicando aqui.](https://github.com/BackMarket/github-mermaid-extension)
+> Se você não conseguir visualizar o diagrama, por favor, instale a seguinte extensão [clicando aqui.](https://chrome.google.com/webstore/detail/mermaid-diagrams/phfcghedmopjadpojhmmaffjmfiakfil)
 
 ```mermaid
 classDiagram
