@@ -47,6 +47,9 @@ O modelo Entidade e Relacionamento foi criado ao utilizar o [Mermaid.js](https:/
 - [Vinícius Lourenço](https://github.com/H4ad)
 - [Otavio Ceolin](https://github.com/OtavioCeolin)
 - [Maria Alice](https://github.com/zmariaalice)
+- [Jualiana Mei](https://github.com/JuhMei)
+- [Matheus Dyonisio](https://github.com/dyonisio)
+- [Thiago Gomes](https://github.com/demoliwes)
 
 ## :memo: Licença
 
