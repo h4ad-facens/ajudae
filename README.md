@@ -36,7 +36,11 @@ O layout foi inspirado no [Marvie](https://www.figma.com/community/file/82787605
 
 ## :book: Documentação
 
-A documentação desse projeto com as funcionalidades está especificado no Notion, para você acessar, [clique aqui](https://www.notion.so/Ajuda-e45e128915ea46249dcc45c065ba6478).
+A documentação desse projeto com as funcionalidades estão especificados no Notion, para você acessar, [clique aqui](https://www.notion.so/Ajuda-e45e128915ea46249dcc45c065ba6478).
+
+### Modelo ER
+
+O modelo Entidade e Relacionamento foi criado ao utilizar o [Mermaid.js](https://mermaid-js.github.io/mermaid/) e você pode encontrá-lo [clicando aqui.](./docs/ENTITIES.md)
 
 ## :muscle: Equipe
 
