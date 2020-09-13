@@ -43,6 +43,18 @@ export class OngEntity extends BaseEntity {
   public email: string;
 
   /**
+   * A cor dessa ONG
+   */
+  @Column({ nullable: false })
+  public color: string;
+
+  /**
+   * A imagem dessa ONG
+   */
+  @Column({ nullable: false })
+  public image: string;
+
+  /**
    * O número de WhatsApp para entrar em contato com essa ong
    */
   @Column({ nullable: false })

@@ -27,6 +27,8 @@ export class OngProxy extends BaseCrudProxy {
 
     this.name = entity.name;
     this.email = entity.email;
+    this.color = entity.color;
+    this.image = entity.image;
     this.whatsapp = entity.whatsapp;
     this.userId = entity.userId;
     this.user = isValid(entity.user) && new UserProxy(entity.user) || void 0;
@@ -45,6 +47,18 @@ export class OngProxy extends BaseCrudProxy {
    */
   @ApiProperty()
   public email: string;
+
+  /**
+   * A cor dessa ONG
+   */
+  @ApiProperty()
+  public color: string;
+
+  /**
+   * A imagem da ONG
+   */
+  @ApiProperty()
+  public image: string;
 
   /**
    * O número de WhatsApp para entrar em contato com essa ong

@@ -39,6 +39,8 @@ describe('Ong (e2e)', () => {
       const createPayload: Record<keyof CreateOngPayload, any> = {
         name: 0,
         email: 0,
+        image: 0,
+        color: 0,
         whatsapp: 0,
         isActive: 1,
       };

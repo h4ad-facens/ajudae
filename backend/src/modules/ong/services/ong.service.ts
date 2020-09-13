@@ -47,16 +47,13 @@ export class OngService {
 
     let query = this.repository.createQueryBuilder('ong')
       .where('ong.isActive = :isActive', { isActive: TypeOrmValueTypes.TRUE })
-      .limit(normalizedLimit)
-      .offset((normalizedPage - 1) * limit);
+      .take(normalizedLimit)
+      .skip((normalizedPage - 1) * limit);
 
     if (relations.some(relation => relation === 'user'))
       query = query.leftJoinAndSelect('ong.user', 'user');
 
-    if (relations.some(relation => relation === 'cases'))
-      query = query.leftJoinAndSelect('ong.cases', 'case', 'case.isActive = :isActive', { isActive: TypeOrmValueTypes.TRUE });
-
-    if (userId && Number(userId))
+    if (Number(userId))
       query = query.andWhere('ong.userId = :userId', { userId: Number(userId) });
 
     return query.getMany();
@@ -128,6 +125,8 @@ export class OngService {
       ...isValid(entityId) && { id: entityId },
       ...isValid(payload.name) && { name: payload.name },
       ...isValid(payload.email) && { email: payload.email },
+      ...isValid(payload.color) && { color: payload.color },
+      ...isValid(payload.image) && { image: payload.image },
       ...isValid(payload.whatsapp) && { whatsapp: payload.whatsapp },
       ...isValid(payload.isActive) && { isActive: payload.isActive },
     });

@@ -1,7 +1,7 @@
 //#region Imports
 
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDefined, IsEmail, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsDefined, IsEmail, IsHexColor, IsString, IsUrl, MaxLength, MinLength } from 'class-validator';
 
 import { BaseCrudCreatePayload } from '../../../common/base-crud-create.payload';
 import { DefaultValidationMessages } from '../../../common/default-validation-messages';
@@ -31,6 +31,24 @@ export class CreateOngPayload extends BaseCrudCreatePayload {
   @MaxLength(255, { message: 'É necessário enviar um e-mail contendo menos de 255 caracteres.' })
   @IsEmail({ }, { message: DefaultValidationMessages.IsEmail })
   public email: string;
+
+  /**
+   * A cor dessa ONG
+   */
+  @ApiProperty()
+  @IsDefined({ message: 'É necessário enviar a cor da ONG.' })
+  @IsString({ message: DefaultValidationMessages.IsString })
+  @IsHexColor({ message: 'A cor dessa ONG precisa ser uma cor em Hexadecimal.' })
+  public color: string;
+
+  /**
+   * A imagem da ONG
+   */
+  @ApiProperty()
+  @IsDefined({ message: 'É necessário enviar a imagem para a ONG.' })
+  @IsString({ message: 'A imagem da ONG precisa ser um url.' })
+  @IsUrl({ }, { message: 'A imagem da ONG precisa ser um url válido.' })
+  public image: string;
 
   /**
    * O número de WhatsApp para entrar em contato com essa ong
