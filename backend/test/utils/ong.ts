@@ -17,6 +17,8 @@ export function getValidCreateOngPayload(): CreateOngPayload {
   return {
     name: 'APAD',
     email: 'contato@apad.com',
+    image: 'https://via.placeholder.com/150',
+    color: '#FFF',
     whatsapp: '15988116111',
     isActive: true,
   };
