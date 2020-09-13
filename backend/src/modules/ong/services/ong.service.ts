@@ -128,6 +128,8 @@ export class OngService {
       ...isValid(entityId) && { id: entityId },
       ...isValid(payload.name) && { name: payload.name },
       ...isValid(payload.email) && { email: payload.email },
+      ...isValid(payload.color) && { color: payload.color },
+      ...isValid(payload.image) && { image: payload.image },
       ...isValid(payload.whatsapp) && { whatsapp: payload.whatsapp },
       ...isValid(payload.isActive) && { isActive: payload.isActive },
     });
