@@ -47,16 +47,13 @@ export class OngService {
 
     let query = this.repository.createQueryBuilder('ong')
       .where('ong.isActive = :isActive', { isActive: TypeOrmValueTypes.TRUE })
-      .limit(normalizedLimit)
-      .offset((normalizedPage - 1) * limit);
+      .take(normalizedLimit)
+      .skip((normalizedPage - 1) * limit);
 
     if (relations.some(relation => relation === 'user'))
       query = query.leftJoinAndSelect('ong.user', 'user');
 
-    if (relations.some(relation => relation === 'cases'))
-      query = query.leftJoinAndSelect('ong.cases', 'case', 'case.isActive = :isActive', { isActive: TypeOrmValueTypes.TRUE });
-
-    if (userId && Number(userId))
+    if (Number(userId))
       query = query.andWhere('ong.userId = :userId', { userId: Number(userId) });
 
     return query.getMany();
