@@ -42,4 +42,13 @@ export class PaginationOptions {
   @IsString({ each: true, message: 'É necessário enviar um texto válido para a relação.' })
   relations?: string[];
 
+  /**
+   * Um texto usado para pesquisar algum termo na entidade
+   */
+  @ApiPropertyOptional({ type: String })
+  @Type(() => String)
+  @IsOptional()
+  @IsString({ each: true, message: 'É necessário enviar um texto válido para a pesquisa.' })
+  search?: string;
+
 }

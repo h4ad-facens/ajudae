@@ -6,8 +6,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { TypeOrmValueTypes } from '../../../common/type-orm-value.types';
-import { OngEntity } from '../entities/ong.entity';
 import { isValid } from '../../../utils/functions';
+import { OngEntity } from '../entities/ong.entity';
 import { CreateOngPayload } from '../models/create-ong.payload';
 import { OngManyPaginationOptions } from '../models/ong-many.pagination.options';
 import { UpdateOngPayload } from '../models/update-ong.payload';
@@ -40,7 +40,7 @@ export class OngService {
    * @param options As opções ao buscar várias ongs
    */
   public async getMany(options?: OngManyPaginationOptions): Promise<OngEntity[]> {
-    const { limit = 15, page = 1, relations = [], userId } = options;
+    const { search, limit = 15, page = 1, relations = [], userId } = options;
 
     const normalizedLimit = Math.min(100, Math.max(1, limit));
     const normalizedPage = Math.max(1, page);
@@ -55,6 +55,9 @@ export class OngService {
 
     if (Number(userId))
       query = query.andWhere('ong.userId = :userId', { userId: Number(userId) });
+
+    if (search)
+      query = query.andWhere('LOWER(ong.name) LIKE :search OR LOWER(ong.whatsapp) LIKE :search', { search: `%${ search.toLowerCase() }%` });
 
     return query.getMany();
   }

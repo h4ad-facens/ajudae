@@ -1,8 +1,9 @@
 //#region Imports
 
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 import { BaseEntity } from '../../../common/base-entity';
+import { CauseEntity } from '../../causes/entities/cause.entity';
 import { UserEntity } from '../../user/entities/user.entity';
 
 //#endregion
@@ -70,7 +71,13 @@ export class OngEntity extends BaseEntity {
    * As informações sobre o usuário
    */
   @ManyToOne(() => UserEntity, user => user.ongs)
-  public user: UserEntity;
+  public user?: UserEntity;
+
+  /**
+   * A lista de causas associadas a essa ONG
+   */
+  @OneToMany(() => CauseEntity, cause => cause.ong)
+  public causes?: CauseEntity[];
 
   //#endregion
 
