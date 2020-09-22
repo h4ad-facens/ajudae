@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthTokenModule } from './modules/auth/auth-token.module';
 
 import { AuthModule } from './modules/auth/auth.module';
-import { AuthTokenModule } from './modules/auth/auth-token.module';
+import { CauseModule } from './modules/causes/cause.module';
 import { EnvModule } from './modules/env/env.module';
 import { OngModule } from './modules/ong/ong.module';
 import { TestModule } from './modules/test/test.module';
@@ -24,6 +25,7 @@ if (process.env.NODE_ENV === 'test')
     EnvModule,
     UserModule,
     OngModule,
+    CauseModule,
     ...testModules,
   ],
   providers: [

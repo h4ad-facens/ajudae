@@ -2,6 +2,7 @@
 
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
+import { CauseEntity } from '../../causes/entities/cause.entity';
 
 import { EnvService } from '../../env/services/env.service';
 import { OngEntity } from '../../ong/entities/ong.entity';
@@ -42,6 +43,7 @@ export class TypeOrmService implements TypeOrmOptionsFactory {
       entities: [
         UserEntity,
         OngEntity,
+        CauseEntity,
       ],
       migrations: [
         __dirname + '/../../../migrations/**/*{.ts,.js}',
