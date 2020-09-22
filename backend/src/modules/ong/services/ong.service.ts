@@ -51,7 +51,10 @@ export class OngService {
       .skip((normalizedPage - 1) * limit);
 
     if (relations.some(relation => relation === 'user'))
-      query = query.leftJoinAndSelect('ong.user', 'user');
+      query = query.leftJoinAndSelect('ong.user', 'user', 'user.isActive = :isActive', { isActive: TypeOrmValueTypes.TRUE });
+
+    if (relations.some(relation => relation === 'causes'))
+      query = query.leftJoinAndSelect('ong.causes', 'causes', 'causes.isActive = :isActive', { isActive: TypeOrmValueTypes.TRUE });
 
     if (Number(userId))
       query = query.andWhere('ong.userId = :userId', { userId: Number(userId) });

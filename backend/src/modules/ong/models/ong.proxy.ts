@@ -5,6 +5,7 @@ import { Type } from 'class-transformer';
 
 import { BaseCrudProxy } from '../../../common/base-crud.proxy';
 import { isValid } from '../../../utils/functions';
+import { CauseProxy } from '../../causes/models/cause.proxy';
 import { UserProxy } from '../../user/models/user.proxy';
 import { OngEntity } from '../entities/ong.entity';
 
@@ -32,6 +33,7 @@ export class OngProxy extends BaseCrudProxy {
     this.whatsapp = entity.whatsapp;
     this.userId = entity.userId;
     this.user = isValid(entity.user) && new UserProxy(entity.user) || void 0;
+    this.causes = Array.isArray(entity.causes) && entity.causes.map(cause => new CauseProxy(cause)) || [];
   }
 
   //#endregion
@@ -77,6 +79,13 @@ export class OngProxy extends BaseCrudProxy {
    */
   @ApiPropertyOptional({ type: () => UserProxy })
   @Type(() => UserProxy)
-  public user: UserProxy;
+  public user?: UserProxy;
+
+  /**
+   * A lista de causas dessa organização
+   */
+  @ApiPropertyOptional({ type: () => CauseProxy, isArray: true })
+  @Type(() => CauseProxy)
+  public causes?: CauseProxy[];
 
 }
