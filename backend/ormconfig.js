@@ -32,7 +32,7 @@ const config = {
   acquireTimeout: env.DB_TIMEOUT,
   synchronize: env.DB_SYNCHRONIZE,
   entities: [
-    'src/modules/**/*{.ts,.js}',
+    'src/modules/**/*{.entity.ts,.entity.js}',
   ],
   migrations: [
     'src/migrations/**/*{.ts,.js}',
