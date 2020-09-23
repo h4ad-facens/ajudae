@@ -70,6 +70,7 @@ export class TypeOrmService implements TypeOrmOptionsFactory {
         collation: 'utf8mb4_unicode_ci',
         // https://stackoverflow.com/questions/35553432/error-handshake-inactivity-timeout-in-node-js-mysql-module
         keepConnectionAlive: true,
+        url: this.env.DATABASE_URL,
         host: this.env.DB_HOST,
         port: this.env.DB_PORT,
         username: this.env.DB_USER,

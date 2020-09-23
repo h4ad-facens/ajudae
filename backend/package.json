@@ -23,7 +23,8 @@
     "typeorm:cli": "ts-node ./node_modules/typeorm/cli -f ormconfig.js",
     "migration": "npm run typeorm:cli -- migration:run",
     "add-migration": "npm run typeorm:cli -- migration:generate -n",
-    "revert-migration": "npm run typeorm:cli -- migration:revert"
+    "revert-migration": "npm run typeorm:cli -- migration:revert",
+    "deploy:heroku": "cd .. && git subtree push --prefix backend heroku master"
   },
   "engines": {
     "node": "12.x"

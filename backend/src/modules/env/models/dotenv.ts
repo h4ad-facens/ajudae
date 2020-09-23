@@ -15,6 +15,11 @@ export interface IDotEnv {
   //#region Database
 
   /**
+   * O url para conexão do bd
+   */
+  DATABASE_URL: string;
+
+  /**
    * O tipo de banco de dados suportado
    */
   DB_TYPE: string;
