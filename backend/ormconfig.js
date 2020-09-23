@@ -4,14 +4,16 @@ const rule = {
   API_BASE_PATH: envalid.str({ default: '' }),
   API_PORT: envalid.port({ default: 3000 }),
   API_DEFAULT_STRATEGY: envalid.str({ default: 'jwt' }),
+  DATABASE_URL: envalid.str({ default: '' }),
   DB_TYPE: envalid.str({ default: '' }),
   DB_DATABASE: envalid.str({ default: '' }),
   DB_HOST: envalid.str({ default: '', devDefault: '' }),
   DB_PASSWORD: envalid.str({ default: '', devDefault: '' }),
-  DB_PORT: envalid.port({ default: 0 }),
+  DB_PORT: envalid.num({ default: 0 }),
   DB_USER: envalid.str({ default: '' }),
   DB_SYNCHRONIZE: envalid.bool({ default: false }),
   DB_MIGRATIONS_RUN: envalid.bool({ default: true }),
+  DB_SSL: envalid.bool({ default: true }),
   SQLITE_DATABASE_HOST_PATH: envalid.str({ default: '' }),
   DB_TIMEOUT: envalid.num({ default: 20000 }),
   JWT_EXPIRES_IN: envalid.str({ default: '7d' }),
@@ -22,7 +24,7 @@ const rule = {
   SWAGGER_VERSION: envalid.str({ default: '1.0' }),
 };
 
-const env = envalid.cleanEnv(process.env, rule, { dotEnvPath: '.env', strict: true, });
+const env = envalid.cleanEnv(process.env, rule, { dotEnvPath: '.env', strict: true });
 
 const config = {
   type: env.DB_TYPE,
@@ -59,14 +61,17 @@ if (env.DB_TYPE === 'postgres')
     collation: 'utf8mb4_unicode_ci',
     // https://stackoverflow.com/questions/35553432/error-handshake-inactivity-timeout-in-node-js-mysql-module
     keepConnectionAlive: true,
+    url: env.DATABASE_URL,
     host: env.DB_HOST,
     port: env.DB_PORT,
     username: env.DB_USER,
     password: env.DB_PASSWORD,
     acquireTimeout: env.DB_TIMEOUT,
-    rejectUnauthorized: true,
+    rejectUnauthorized: false,
     extra: {
-      ssl: true,
+      ssl: {
+        rejectUnauthorized: false,
+      },
     },
   });
 

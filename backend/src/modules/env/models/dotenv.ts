@@ -66,6 +66,11 @@ export interface IDotEnv {
    */
   DB_TIMEOUT: number;
 
+  /**
+   * Habilita a conexão com ssl
+   */
+  DB_SSL: boolean;
+
   //#endregion
 
   //#region API

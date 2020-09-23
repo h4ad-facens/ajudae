@@ -68,6 +68,7 @@ export class EnvService extends implementOptionalInterface<Partial<Readonly<IDot
       DB_SYNCHRONIZE: envalid.bool({ default: false }),
       DB_MIGRATIONS_RUN: envalid.bool({ default: true }),
       DB_TIMEOUT: envalid.num({ default: 20_000 }),
+      DB_SSL: envalid.bool({ default: false }),
       JWT_EXPIRES_IN: envalid.str({ default: '7d' }),
       JWT_SECRET_KEY: envalid.str({ devDefault: 'CHANGE_THIS_SECRET' }),
       SWAGGER_DESCRIPTION: envalid.str({ default: 'Base API' }),
