@@ -7,6 +7,7 @@ const InputArea = styled.View`
     background-color: #FFF;
     flex-direction: row;
     border-radius: 12px;
+    border: 2px solid #D9D9D9;
     padding-left: 22px;
     align-items: center;
     margin-bottom: 24px;
