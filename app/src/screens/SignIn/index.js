@@ -1,106 +1,122 @@
 import React, { useState, useContext } from 'react';
 import { Alert } from 'react-native';
-import { 
-    Container,
-    HeaderArea,
-    BlueSquare,
-    WelcomeText,
-    WelcomeDescription,
-    InputArea,
-    SignMessageButton,
-    SignMessageButtonText,
-    CustomButton,
-    CustomButtonText,
-    CustomButtonArrow,
+import {
+  Container,
+  HeaderArea,
+  BlueSquare,
+  WelcomeText,
+  WelcomeDescription,
+  InputArea,
+  SignMessageButton,
+  SignMessageButtonText,
+  CustomButton,
+  CustomButtonText,
+  CustomButtonArrow,
 } from './styles';
 
 import Api from '../../Api';
 import AsyncStorage from '@react-native-community/async-storage';
+
 import { UserContext } from '../../contexts/UserContext';
-
-import SignInput from '../../components/SignInput';
-
+import AjudaeInput from '../../components/AjudaeInput';
 import ArrowIcon from '../../assets/arrow.svg';
 import ProfileIcon from '../../assets/profile.svg';
 import LockIcon from '../../assets/lock.svg';
 
-export default ({navigation}) => {
-    const [emailField, setEmailField] = useState('');
-    const [passwordField, setPasswordField] = useState('');
-    const { dispatch: userDispatch } = useContext(UserContext);
- 
-    const goTo = (screenName) => {
-        navigation.navigate(screenName);
-    }
+export default ({ navigation }) => {
+  const [emailField, setEmailField] = useState('');
+  const [passwordField, setPasswordField] = useState('');
+  const { dispatch: userDispatch } = useContext(UserContext);
 
-    const handleSignClick = async () => {
-        if(emailField != '' && passwordField != ''){
-            let jsonSign = await Api.signIn(emailField, passwordField);
-            if(jsonSign.token){
-                await AsyncStorage.setItem('ajudae@token', jsonSign.token);
-                await AsyncStorage.setItem('ajudae@expiresat', String(jsonSign.expiresAt));
+  const goTo = (screenName) => {
+    navigation.navigate(screenName);
+  };
 
-                let jsonMe = await Api.getMe();
-                if(jsonMe.name)
-                {
-                    userDispatch({
-                        type: 'setName',
-                        payload:{
-                            name: jsonMe.name
-                        }
-                    });
+  const presentMessage = (title, message) =>
+    Alert.alert(title, message, [{ text: 'Entendi!' }]);
 
-                    navigation.reset({
-                        routes: [{name:'Profile'}]
-                    });
-                }
-            } else {
-                Alert.alert('OOPS!', jsonSign.message, [
-                    {text: 'Ok!'}
-                ]);
-            }
+  const handleSignClick = async () => {
+    if (!emailField)
+      return presentMessage(
+        'OOPS!',
+        'É necessário preencher o campo do e-mail!',
+      );
 
-        } else {
-            Alert.alert('OOPS!', 'Preencha todos os campos', [
-                {text: 'Entendi!'}
-            ]);
-        }
-    }
+    if (!passwordField)
+      return presentMessage(
+        'OOPS!',
+        'É necessário preencher o campo de senha!',
+      );
 
-    return(
-        <Container>
-            <HeaderArea>
-                <BlueSquare />
-                <WelcomeText>Bem-vindo</WelcomeText>
-                <WelcomeDescription>Primeiro, entre no aplicativo para poder gerenciar suas ONGs.</WelcomeDescription>
-            </HeaderArea>
-            
-            <InputArea>
-                <SignInput 
-                    IconSvg={ProfileIcon} 
-                    placeholder="Seu e-mail"
-                    value={emailField}
-                    onChangeText={t=>setEmailField(t)}
-                />
-                <SignInput 
-                    IconSvg={LockIcon} 
-                    placeholder="Sua senha"
-                    value={passwordField}
-                    onChangeText={t=>setPasswordField(t)}
-                    password={true}
-                />
+    let jsonSign = await Api.signIn(emailField, passwordField);
 
-                <SignMessageButton onPress={() => goTo('SignUp')}>
-                    <SignMessageButtonText>Não possui conta? Clique aqui para se registrar.</SignMessageButtonText>
-                </SignMessageButton>
+    if (jsonSign === null)
+      return presentMessage(
+        'OOPS!',
+        'Ocorreu um erro desconhecido, por favor, tente novamente!',
+      );
 
-                <CustomButton onPress={handleSignClick}>
-                    <CustomButtonText>Entrar</CustomButtonText>
-                    <CustomButtonArrow>
-                        <ArrowIcon width="20.83" fill={"#FFFFFF"} height="9"/>
-                    </CustomButtonArrow>
-                </CustomButton>
-            </InputArea>            
-        </Container>
-    );
-}
+    const { message, token, expiresAt } = jsonSign;
+
+    if (message) return presentMessage('OOPS!', message);
+
+    await AsyncStorage.setItem('ajudae@token', token);
+    await AsyncStorage.setItem('ajudae@expiresat', String(expiresAt));
+
+    let { message: errorOnMe, ...user } = await Api.getMe();
+
+    if (errorOnMe) return presentMessage('OOPS!', errorOnMe);
+
+    userDispatch({
+      type: 'setName',
+      payload: {
+        name: user.name,
+      },
+    });
+
+    navigation.reset({
+      routes: [{ name: 'Profile' }],
+    });
+  };
+
+  return (
+    <Container>
+      <HeaderArea>
+        <BlueSquare />
+        <WelcomeText>Bem-vindo</WelcomeText>
+        <WelcomeDescription>
+          Primeiro, entre no aplicativo para poder gerenciar suas ONGs.
+        </WelcomeDescription>
+      </HeaderArea>
+
+      <InputArea>
+        <AjudaeInput
+          IconSvg={ProfileIcon}
+          placeholder="Seu e-mail"
+          value={emailField}
+          onChangeText={(t) => setEmailField(t)}
+        />
+        <AjudaeInput
+          IconSvg={LockIcon}
+          placeholder="Sua senha"
+          value={passwordField}
+          onChangeText={(t) => setPasswordField(t)}
+          password={true}
+        />
+
+        <SignMessageButton onPress={() => goTo('SignUp')}>
+          <SignMessageButtonText>
+            Não possui conta? Clique aqui para se registrar.
+          </SignMessageButtonText>
+        </SignMessageButton>
+
+        <CustomButton onPress={handleSignClick}>
+          <CustomButtonText>Entrar</CustomButtonText>
+          <CustomButtonArrow>
+            <ArrowIcon width="20.83" fill={'#FFFFFF'} height="9" />
+          </CustomButtonArrow>
+        </CustomButton>
+      </InputArea>
+    </Container>
+  );
+};
