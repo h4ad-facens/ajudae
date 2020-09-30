@@ -1,4 +1,4 @@
-package com.app;
+package com.app.ajudae;
 
 import android.app.Application;
 import android.content.Context;

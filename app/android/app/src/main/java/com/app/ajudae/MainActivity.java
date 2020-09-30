@@ -1,4 +1,4 @@
-package com.app;
+package com.app.ajudae;
 
 import com.facebook.react.ReactActivity;
 
