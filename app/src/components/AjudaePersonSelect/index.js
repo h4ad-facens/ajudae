@@ -33,10 +33,10 @@ const AjudaePersonSelect = ({ defaultPersonImage, onSelectPersonImage }) => {
     items.findIndex((item) => item.value === defaultPersonImage),
   );
 
-  const onPressPerson = (index, value) => {
+  const onPressPerson = (index, color, image) => {
     setSelectedPersonIndex(index);
 
-    onSelectPersonImage && onSelectPersonImage(value);
+    onSelectPersonImage && onSelectPersonImage({ color, image });
   };
 
   return (
@@ -46,7 +46,7 @@ const AjudaePersonSelect = ({ defaultPersonImage, onSelectPersonImage }) => {
           key={index}
           color={color}
           selected={index === selectedPersonIndex}
-          onPress={() => onPressPerson(index, value)}>
+          onPress={() => onPressPerson(index, color, value)}>
           <PersonImage source={source} />
         </PersonItem>
       ))}

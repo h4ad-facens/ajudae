@@ -41,4 +41,19 @@ export default {
       .then(async (request) => await request.json())
       .catch(() => null);
   },
+  createOng: async (payload) => {
+    const token = await AsyncStorage.getItem('ajudae@token');
+
+    return await fetch(`${BASE_API}/ongs`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+      body: JSON.stringify(payload),
+    })
+      .then(async (request) => await request.json())
+      .catch(() => null);
+  },
 };
