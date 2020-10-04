@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import React, { useContext } from 'react';
 import LogoutIcon from '../../assets/logout.svg';
 import PlusIcon from '../../assets/plus.svg';
+import AjudaeHeader from '../../components/AjudaeHeader';
 import DefaultButton from '../../components/DefaultButton';
 import { UserContext } from '../../contexts/UserContext';
 import {
@@ -14,8 +15,6 @@ import {
   CustomOngTitle,
   HeaderArea,
   Scroller,
-  WelcomeDescription,
-  WelcomeText,
 } from './styles';
 
 export default ({ state, navigation }) => {
@@ -40,10 +39,10 @@ export default ({ state, navigation }) => {
       <Scroller>
         <HeaderArea>
           <BlueSquare />
-          <WelcomeText>{user.name}</WelcomeText>
-          <WelcomeDescription>
-            Bem-vindo de volta! {'\n'}Abaixo, suas ONGS.
-          </WelcomeDescription>
+          <AjudaeHeader
+            title={user.name}
+            description={'Bem-vindo de volta!\nAbaixo, suas ONGS.'}
+          />
         </HeaderArea>
         <ButtonArea>
           <DefaultButton

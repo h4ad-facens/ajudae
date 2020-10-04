@@ -26,15 +26,6 @@ export const BlueSquare = styled.View`
   margin-bottom: 28px;
   margin-top: 24px;
 `;
-export const WelcomeText = styled.Text`
-  font-size: 40px;
-  font-weight: bold;
-  margin-bottom: 15px;
-`;
-export const WelcomeDescription = styled.Text`
-  font-size: 24px;
-  color: #262626;
-`;
 
 export const ButtonArea = styled.View`
   width: 100%;
