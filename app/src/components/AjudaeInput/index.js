@@ -7,10 +7,11 @@ const AjudaeInput = ({
   value,
   onChangeText,
   password,
+  iconFill = '#BBB',
 }) => {
   return (
     <InputArea>
-      <IconSvg width="20" height="20" fill="#BBB" />
+      <IconSvg width="20" height="20" fill={iconFill} />
       <Input
         placeholder={placeholder}
         placeholderTextColor="#BFBFBF"
