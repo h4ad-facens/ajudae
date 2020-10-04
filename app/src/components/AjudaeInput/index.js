@@ -1,4 +1,5 @@
 import React from 'react';
+import AjudaeSpacing from '../AjudaeSpacing';
 import { Input, InputArea } from './styles';
 
 const AjudaeInput = ({
@@ -8,11 +9,16 @@ const AjudaeInput = ({
   onChangeText,
   password,
   iconFill = '#BBB',
+  textAreaMode = false,
 }) => {
   return (
     <InputArea>
-      <IconSvg width="20" height="20" fill={iconFill} />
+      <AjudaeSpacing marginTop="13px">
+        <IconSvg width="20" height="20" fill={iconFill} />
+      </AjudaeSpacing>
       <Input
+        multiline={textAreaMode}
+        numberOfLine={textAreaMode ? 4 : 1}
         placeholder={placeholder}
         placeholderTextColor="#BFBFBF"
         value={value}
