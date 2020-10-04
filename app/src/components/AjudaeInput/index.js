@@ -1,7 +1,13 @@
 import React from 'react';
-import {Input, InputArea} from './styles';
+import { Input, InputArea } from './styles';
 
-export default ({IconSvg, placeholder, value, onChangeText, password}) => {
+const AjudaeInput = ({
+  IconSvg,
+  placeholder,
+  value,
+  onChangeText,
+  password,
+}) => {
   return (
     <InputArea>
       <IconSvg width="20" height="20" fill="#BBB" />
@@ -15,3 +21,5 @@ export default ({IconSvg, placeholder, value, onChangeText, password}) => {
     </InputArea>
   );
 };
+
+export default AjudaeInput;
