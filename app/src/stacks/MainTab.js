@@ -12,16 +12,13 @@ import SignUp from '../screens/SignUp';
 const Tab = createBottomTabNavigator();
 
 export default () => (
-    <Tab.Navigator
-        screenOptions={{
-            
-        }}
-        tabBar={props=><CustomTabBar {...props} />}
-    >
-        <Tab.Screen name="Ongs" component={Ongs} />
-        <Tab.Screen name="Causes" component={Causes} />
-        <Tab.Screen name="Profile" component={Profile} />
-        <Tab.Screen name="SignIn" component={SignIn} />
-        <Tab.Screen name="SignUp" component={SignUp} />
-    </Tab.Navigator>
-)
+  <Tab.Navigator
+    screenOptions={{}}
+    tabBar={(props) => <CustomTabBar {...props} />}>
+    <Tab.Screen name="Ongs" component={Ongs} />
+    <Tab.Screen name="Causes" component={Causes} />
+    <Tab.Screen name="Profile" component={Profile} />
+    <Tab.Screen name="SignIn" component={SignIn} />
+    <Tab.Screen name="SignUp" component={SignUp} />
+  </Tab.Navigator>
+);
