@@ -1,11 +1,24 @@
 import React from 'react';
-import {Input, InputArea} from './styles';
+import AjudaeSpacing from '../AjudaeSpacing';
+import { Input, InputArea } from './styles';
 
-export default ({IconSvg, placeholder, value, onChangeText, password}) => {
+const AjudaeInput = ({
+  IconSvg,
+  placeholder,
+  value,
+  onChangeText,
+  password,
+  iconFill = '#BBB',
+  textAreaMode = false,
+}) => {
   return (
     <InputArea>
-      <IconSvg width="20" height="20" fill="#BBB" />
+      <AjudaeSpacing marginTop="13px">
+        <IconSvg width="20" height="20" fill={iconFill} />
+      </AjudaeSpacing>
       <Input
+        multiline={textAreaMode}
+        numberOfLine={textAreaMode ? 4 : 1}
         placeholder={placeholder}
         placeholderTextColor="#BFBFBF"
         value={value}
@@ -15,3 +28,5 @@ export default ({IconSvg, placeholder, value, onChangeText, password}) => {
     </InputArea>
   );
 };
+
+export default AjudaeInput;
