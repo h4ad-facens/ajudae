@@ -38,10 +38,10 @@ export default ({ state, navigation }) => {
     <Container>
       <Scroller>
         <HeaderArea>
-          <BlueSquare />
           <AjudaeHeader
             title={user.name}
             description={'Bem-vindo de volta!\nAbaixo, suas ONGS.'}
+            showDetail={true}
           />
         </HeaderArea>
         <ButtonArea>
