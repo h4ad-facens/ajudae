@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import personIcon1 from '../../assets/person_1.png';
 import personIcon2 from '../../assets/person_2.png';
@@ -29,9 +29,15 @@ const AjudaePersonSelect = ({ defaultPersonImage, onSelectPersonImage }) => {
       value: 'personIcon4',
     },
   ];
-  const [selectedPersonIndex, setSelectedPersonIndex] = useState(
-    items.findIndex((item) => item.value === defaultPersonImage),
-  );
+  const [selectedPersonIndex, setSelectedPersonIndex] = useState(-1);
+
+  useEffect(() => {
+    setSelectedPersonIndex(
+      items.findIndex((item) => item.value === defaultPersonImage),
+    );
+
+    console.log(defaultPersonImage);
+  }, [defaultPersonImage]);
 
   const onPressPerson = (index, color, image) => {
     setSelectedPersonIndex(index);
