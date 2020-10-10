@@ -33,16 +33,15 @@ export const ButtonArea = styled.View`
 
 export const CustomOngs = styled.TouchableOpacity`
   width: 100%;
-  height: 190px;
   background-color: #fff;
-  padding: 19px;
+  padding: 24px;
   border-radius: 25px;
   border-width: 1px;
   border-color: #ddd;
   shadow-opacity: 0.9;
   elevation: 3;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   margin-bottom: 20px;
 `;
 

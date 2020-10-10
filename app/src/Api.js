@@ -71,4 +71,18 @@ export default {
       .then(async (request) => await request.json())
       .catch(() => null);
   },
+  getOngsByUser: async (userId) => {
+    const token = await AsyncStorage.getItem('ajudae@token');
+
+    return await fetch(`${BASE_API}/ongs?userId=${userId}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    })
+      .then(async (request) => await request.json())
+      .catch(() => null);
+  },
 };
