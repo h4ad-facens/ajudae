@@ -6,7 +6,6 @@ import AjudaeHeader from '../../components/AjudaeHeader';
 import DefaultButton from '../../components/DefaultButton';
 import { UserContext } from '../../contexts/UserContext';
 import {
-  BlueSquare,
   ButtonArea,
   Container,
   CustomOngCreated,
