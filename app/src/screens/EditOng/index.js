@@ -1,23 +1,22 @@
-import React, { useState } from 'react';
-
+import React, { useEffect, useState } from 'react';
+import { Alert } from 'react-native';
+import Api from '../../Api';
 import JobIcon from '../../assets/job.svg';
+import MessageIcon from '../../assets/message.svg';
 import ReaderIcon from '../../assets/reader.svg';
 import WhatsAppIcon from '../../assets/whatsapp.svg';
-import MessageIcon from '../../assets/message.svg';
 import AjudaeBackButton from '../../components/AjudaeBackButton';
 import AjudaeHeader from '../../components/AjudaeHeader';
 import AjudaeInput from '../../components/AjudaeInput';
 import AjudaePersonSelect from '../../components/AjudaePersonSelect';
-import {
-  Container,
-  Scroller,
-  ButtonsContainer,
-  SaveButtonContainer,
-} from './styles';
 import AjudaeSaveButton from '../../components/AjudaeSaveButton';
 import AjudaeSpacing from '../../components/AjudaeSpacing';
-import { Alert } from 'react-native';
-import Api from '../../Api';
+import {
+  ButtonsContainer,
+  Container,
+  SaveButtonContainer,
+  Scroller,
+} from './styles';
 
 /**
  * Para usar essa página, é necessário passar alguns argumentos na rota,
@@ -37,17 +36,27 @@ import Api from '../../Api';
 const EditOng = ({ navigation, route: { params: ong } }) => {
   if (!ong) return navigation.navigate('ProfileUser');
 
-  const [name, setName] = useState(ong.name);
-  const [email, setEmail] = useState(ong.email);
-  const [whatsapp, setWhatsapp] = useState(ong.whatsapp);
-  const [description, setDescription] = useState(ong.description);
-  const defaultPersonImage = ong.image.includes('personIcon1')
-    ? 'personIcon1'
-    : ong.image.includes('personIcon2')
-    ? 'personIcon2'
-    : ong.image.includes('personIcon3')
-    ? 'personIcon3'
-    : 'personIcon4';
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [whatsapp, setWhatsapp] = useState('');
+  const [description, setDescription] = useState('');
+  const [defaultPersonImage, setDefaultPersonImage] = useState('');
+
+  useEffect(() => {
+    setName(ong.name);
+    setEmail(ong.email);
+    setWhatsapp(ong.whatsapp);
+    setDescription(ong.description);
+    setDefaultPersonImage(
+      ong.image.includes('personIcon1')
+        ? 'personIcon1'
+        : ong.image.includes('personIcon2')
+        ? 'personIcon2'
+        : ong.image.includes('personIcon3')
+        ? 'personIcon3'
+        : 'personIcon4',
+    );
+  }, [ong]);
 
   function onSelectPersonImage({ color, image }) {
     ong.image = `https://ajudae.com.br/${image}.png`;
