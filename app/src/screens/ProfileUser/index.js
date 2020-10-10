@@ -1,12 +1,14 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { Alert } from 'react-native';
+
+import Api from '../../Api';
 import LogoutIcon from '../../assets/logout.svg';
 import PlusIcon from '../../assets/plus.svg';
 import AjudaeHeader from '../../components/AjudaeHeader';
 import DefaultButton from '../../components/DefaultButton';
 import { UserContext } from '../../contexts/UserContext';
 import {
-  BlueSquare,
   ButtonArea,
   Container,
   CustomOngCreated,
@@ -19,6 +21,7 @@ import {
 
 export default ({ state, navigation }) => {
   const { state: user } = useContext(UserContext);
+  const [listOngs, setListOngs] = useState([]);
 
   const handleLogoutClick = async () => {
     await AsyncStorage.removeItem('ajudae@token');
@@ -28,11 +31,35 @@ export default ({ state, navigation }) => {
     });
   };
 
-  const handleNewOngClick = async () => {
-    navigation.reset({
-      routes: [{ name: 'AddOng' }],
-    });
+  const handleNewOngClick = () => {
+    navigation.navigate('AddOng');
   };
+
+  const handleEditOngClick = (ong) => {
+    navigation.navigate('EditOng', ong);
+  };
+
+  const presentMessage = (title, message) =>
+    Alert.alert(title, message, [{ text: 'Entendi!' }]);
+
+  useEffect(() => {
+    let isCanceled = false;
+
+    Api.getOngsByUser(user.id).then((result) => {
+      if (isCanceled) return;
+
+      if (typeof result?.message === 'string' || !Array.isArray(result))
+        return presentMessage(
+          'Oops...',
+          (result?.message && result?.message[0]) ||
+            'Não foi possível carregar as suas ONGs.',
+        );
+
+      setListOngs(result);
+    });
+
+    return () => void (isCanceled = true);
+  }, [setListOngs]);
 
   return (
     <Container>
@@ -52,7 +79,6 @@ export default ({ state, navigation }) => {
             height="12"
             onPress={handleNewOngClick}
           />
-
           <DefaultButton
             IconSvg={LogoutIcon}
             text="Sair do aplicativo"
@@ -60,24 +86,15 @@ export default ({ state, navigation }) => {
             height="18"
             onPress={handleLogoutClick}
           />
-          <CustomOngs>
-            <CustomOngTitle>Amigos do Bem</CustomOngTitle>
-            <CustomOngCreated>Criada em 20 de Abril de 2020</CustomOngCreated>
-            <CustomOngDescription>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce non
-              justo vitae velit accumsan laoreet eget at orci. Donec elit orci,
-              vehicula vitae viverra ut, finibus id ex.
-            </CustomOngDescription>
-          </CustomOngs>
-          <CustomOngs>
-            <CustomOngTitle>Amigos do Bem</CustomOngTitle>
-            <CustomOngCreated>Criada em 20 de Abril de 2020</CustomOngCreated>
-            <CustomOngDescription>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce non
-              justo vitae velit accumsan laoreet eget at orci. Donec elit orci,
-              vehicula vitae viverra ut, finibus id ex.
-            </CustomOngDescription>
-          </CustomOngs>
+          {listOngs.map((ong) => (
+            <CustomOngs key={ong.id} onPress={() => handleEditOngClick(ong)}>
+              <CustomOngTitle>{ong.name}</CustomOngTitle>
+              <CustomOngCreated>Criada em {ong.createdAt}</CustomOngCreated>
+              <CustomOngDescription>
+                {ong.description || 'Não há descrição para essa ONG.'}
+              </CustomOngDescription>
+            </CustomOngs>
+          ))}
         </ButtonArea>
       </Scroller>
     </Container>

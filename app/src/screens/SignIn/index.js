@@ -68,9 +68,9 @@ export default ({ navigation }) => {
     if (errorOnMe) return presentMessage('OOPS!', errorOnMe);
 
     userDispatch({
-      type: 'setName',
+      type: 'setUser',
       payload: {
-        name: user.name,
+        ...user,
       },
     });
 

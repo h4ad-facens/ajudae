@@ -1,15 +1,14 @@
 export const initialState = {
-    name: '',
+  id: 0,
+  name: '',
 };
 
 export const UserReducer = (state, action) => {
-    switch(action.type){
-        case 'setName':
-            return {...state, name: action.payload.name};
-        break;
+  switch (action.type) {
+    case 'setUser':
+      return { ...state, ...action.payload };
 
-        default:
-            return state;
-        break;
-    }
-}
+    default:
+      return state;
+  }
+};
