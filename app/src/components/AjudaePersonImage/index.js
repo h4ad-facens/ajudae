@@ -30,12 +30,13 @@ const items = [
   },
 ];
 
-const AjudaePersonImage = ({ selected, personImage, onPress }) => {
+const AjudaePersonImage = ({ selected, personImage, onPress, borderRadius = '12' }) => {
   const { color, source, value } =
     items.find((item) => item.value === personImage) || items[0];
 
   return (
     <PersonItem
+      borderRadius={borderRadius}
       color={color}
       selected={selected}
       onPress={() => onPress({ color, source, value })}>

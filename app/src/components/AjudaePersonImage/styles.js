@@ -5,7 +5,7 @@ export const PersonItem = styled.TouchableOpacity`
   height: 60px;
   padding: 0 4px;
   background-color: ${(props) => props.color};
-  border-radius: 12px;
+  border-radius: ${(props) => props.borderRadius}px;
   border: ${(props) => (props.selected ? '2px solid #2E2E2E' : '0px')};
   display: flex;
   align-items: center;
