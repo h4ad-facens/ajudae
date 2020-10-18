@@ -85,11 +85,11 @@ export default {
 
     return await request.json();
   },
-  getCausesByOng: async (queryKey, ongId) => {
+  getCausesByOng: async (queryKey, ongId, page) => {
     const token = await AsyncStorage.getItem('ajudae@token');
 
     const request = await fetch(
-      `${BASE_API}/causes?relations=ong&ongId=${ongId}`,
+      `${BASE_API}/causes?relations=ong&ongId=${ongId}&page=${page}`,
       {
         method: 'GET',
         headers: {
@@ -101,6 +101,23 @@ export default {
     );
 
     return request.json();
+  },
+  getExpiredCausesByOng: async (queryKey, ongId, page) => {
+    const token = await AsyncStorage.getItem('ajudae@token');
+
+    const request = await fetch(
+      `${BASE_API}/causes?relations=ong&filterBy=expired&ongId=${ongId}&page=${page}`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      },
+    );
+
+    return await request.json();
   },
   getOngById: async (queryKey, ongId) => {
     const token = await AsyncStorage.getItem('ajudae@token');
