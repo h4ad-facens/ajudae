@@ -85,4 +85,35 @@ export default {
       .then(async (request) => await request.json())
       .catch(() => null);
   },
+  getCausesByOng: async (queryKey, ongId) => {
+    const token = await AsyncStorage.getItem('ajudae@token');
+
+    const request = await fetch(
+      `${BASE_API}/causes?relations=ong&ongId=${ongId}`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      },
+    );
+
+    return request.json();
+  },
+  deleteCause: async (causeId) => {
+    const token = await AsyncStorage.getItem('ajudae@token');
+
+    const request = await fetch(`${BASE_API}/causes/${causeId}`, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    });
+
+    return { success: request.ok };
+  },
 };

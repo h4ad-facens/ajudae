@@ -35,8 +35,8 @@ export default ({ state, navigation }) => {
     navigation.navigate('AddOng');
   };
 
-  const handleEditOngClick = (ong) => {
-    navigation.navigate('EditOng', ong);
+  const handleClickOng = (ong) => {
+    navigation.navigate('OngInfo', ong);
   };
 
   const presentMessage = (title, message) =>
@@ -87,7 +87,7 @@ export default ({ state, navigation }) => {
             onPress={handleLogoutClick}
           />
           {listOngs.map((ong) => (
-            <CustomOngs key={ong.id} onPress={() => handleEditOngClick(ong)}>
+            <CustomOngs key={ong.id} onPress={() => handleClickOng(ong)}>
               <CustomOngTitle>{ong.name}</CustomOngTitle>
               <CustomOngCreated>Criada em {ong.createdAt}</CustomOngCreated>
               <CustomOngDescription>
