@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Alert } from 'react-native';
+import { Alert, Text } from 'react-native';
+import { useQuery, useQueryCache } from 'react-query';
 import Api from '../../Api';
 import JobIcon from '../../assets/job.svg';
 import MessageIcon from '../../assets/message.svg';
@@ -18,6 +19,20 @@ import {
   Scroller,
 } from './styles';
 
+export function extractPersonImagemFromOng(ong) {
+  if (!ong || !ong.image) {
+    return 'personIcon1';
+  }
+
+  return ong.image.includes('personIcon1')
+    ? 'personIcon1'
+    : ong.image.includes('personIcon2')
+    ? 'personIcon2'
+    : ong.image.includes('personIcon3')
+    ? 'personIcon3'
+    : 'personIcon4';
+}
+
 /**
  * Para usar essa página, é necessário passar alguns argumentos na rota,
  * da seguinte forma:
@@ -33,30 +48,26 @@ import {
  *});
  * ```
  */
-const EditOng = ({ navigation, route: { params: ong } }) => {
-  if (!ong) return navigation.navigate('ProfileUser');
+const EditOng = ({ navigation, route: { params: oldOng } }) => {
+  const queryCache = useQueryCache();
+  const { isLoading: isLoadingOng, data: ong } = useQuery(
+    ['organization', oldOng.id],
+    Api.getOngById,
+  );
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [whatsapp, setWhatsapp] = useState('');
-  const [description, setDescription] = useState('');
-  const [defaultPersonImage, setDefaultPersonImage] = useState('');
+  const [name, setName] = useState(ong?.name);
+  const [email, setEmail] = useState(ong?.email);
+  const [whatsapp, setWhatsapp] = useState(ong?.whatsapp);
+  const [description, setDescription] = useState(ong?.description);
+  const [defaultPersonImage] = useState(extractPersonImagemFromOng(ong));
 
-  useEffect(() => {
-    setName(ong.name);
-    setEmail(ong.email);
-    setWhatsapp(ong.whatsapp);
-    setDescription(ong.description);
-    setDefaultPersonImage(
-      ong.image.includes('personIcon1')
-        ? 'personIcon1'
-        : ong.image.includes('personIcon2')
-        ? 'personIcon2'
-        : ong.image.includes('personIcon3')
-        ? 'personIcon3'
-        : 'personIcon4',
-    );
-  }, [ong]);
+  if (!oldOng) {
+    return navigation.navigate('ProfileUser');
+  }
+
+  if (isLoadingOng) {
+    return <Text>Carregando ong...</Text>;
+  }
 
   function onSelectPersonImage({ color, image }) {
     ong.image = `https://ajudae.com.br/${image}.png`;
@@ -77,22 +88,28 @@ const EditOng = ({ navigation, route: { params: ong } }) => {
 
     const result = await Api.updateOng(ong.id, payload);
 
-    if (result === null)
+    if (result === null) {
       return presentMessage(
         'OOPS!',
         'Ocorreu um erro desconhecido, por favor, tente novamente!',
       );
+    }
 
     const { message } = result;
 
-    if (message)
+    if (message) {
       return presentMessage(
         'OOPS!',
         Array.isArray(message) ? message[0] : message,
       );
+    }
+
+    await queryCache.invalidateQueries(['organization', ong.id]);
+    await queryCache.invalidateQueries(['organization']);
 
     presentMessage('Sucesso', 'A ONG foi atualizada com sucesso!');
-    navigation.navigate('ProfileUser'); // TODO: Alterar depois a rota para retornar a listagem de ongs
+
+    navigation.navigate('OngInfo');
   }
 
   return (
