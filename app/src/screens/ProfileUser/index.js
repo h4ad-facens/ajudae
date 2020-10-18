@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import React, { useContext, useEffect, useState } from 'react';
-import { Alert } from 'react-native';
+import React, { useContext } from 'react';
+import { Text } from 'react-native';
+import { useQuery } from 'react-query';
 
 import Api from '../../Api';
 import LogoutIcon from '../../assets/logout.svg';
@@ -19,9 +20,12 @@ import {
   Scroller,
 } from './styles';
 
-export default ({ state, navigation }) => {
+export default ({ navigation }) => {
   const { state: user } = useContext(UserContext);
-  const [listOngs, setListOngs] = useState([]);
+  const { isLoading, data: listOngs } = useQuery(
+    'organization',
+    () => Api.getOngsByUser(user.id),
+  );
 
   const handleLogoutClick = async () => {
     await AsyncStorage.removeItem('ajudae@token');
@@ -38,28 +42,6 @@ export default ({ state, navigation }) => {
   const handleClickOng = (ong) => {
     navigation.navigate('OngInfo', ong);
   };
-
-  const presentMessage = (title, message) =>
-    Alert.alert(title, message, [{ text: 'Entendi!' }]);
-
-  useEffect(() => {
-    let isCanceled = false;
-
-    Api.getOngsByUser(user.id).then((result) => {
-      if (isCanceled) return;
-
-      if (typeof result?.message === 'string' || !Array.isArray(result))
-        return presentMessage(
-          'Oops...',
-          (result?.message && result?.message[0]) ||
-            'Não foi possível carregar as suas ONGs.',
-        );
-
-      setListOngs(result);
-    });
-
-    return () => void (isCanceled = true);
-  }, [setListOngs]);
 
   return (
     <Container>
@@ -86,7 +68,8 @@ export default ({ state, navigation }) => {
             height="18"
             onPress={handleLogoutClick}
           />
-          {listOngs.map((ong) => (
+          {isLoading && <Text>Carregando suas ongs...</Text>}
+          {listOngs?.map((ong) => (
             <CustomOngs key={ong.id} onPress={() => handleClickOng(ong)}>
               <CustomOngTitle>{ong.name}</CustomOngTitle>
               <CustomOngCreated>Criada em {ong.createdAt}</CustomOngCreated>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Alert } from 'react-native';
+import { Alert, Text } from 'react-native';
+import { useQuery, useQueryCache } from 'react-query';
 import Api from '../../Api';
 import JobIcon from '../../assets/job.svg';
 import MessageIcon from '../../assets/message.svg';
@@ -19,6 +20,10 @@ import {
 } from './styles';
 
 export function extractPersonImagemFromOng(ong) {
+  if (!ong || !ong.image) {
+    return 'personIcon1';
+  }
+
   return ong.image.includes('personIcon1')
     ? 'personIcon1'
     : ong.image.includes('personIcon2')
@@ -43,24 +48,26 @@ export function extractPersonImagemFromOng(ong) {
  *});
  * ```
  */
-const EditOng = ({ navigation, route: { params: ong } }) => {
-  if (!ong) {
+const EditOng = ({ navigation, route: { params: oldOng } }) => {
+  const queryCache = useQueryCache();
+  const { isLoading: isLoadingOng, data: ong } = useQuery(
+    ['organization', oldOng.id],
+    Api.getOngById,
+  );
+
+  const [name, setName] = useState(ong?.name);
+  const [email, setEmail] = useState(ong?.email);
+  const [whatsapp, setWhatsapp] = useState(ong?.whatsapp);
+  const [description, setDescription] = useState(ong?.description);
+  const [defaultPersonImage] = useState(extractPersonImagemFromOng(ong));
+
+  if (!oldOng) {
     return navigation.navigate('ProfileUser');
   }
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [whatsapp, setWhatsapp] = useState('');
-  const [description, setDescription] = useState('');
-  const [defaultPersonImage, setDefaultPersonImage] = useState('');
-
-  useEffect(() => {
-    setName(ong.name);
-    setEmail(ong.email);
-    setWhatsapp(ong.whatsapp);
-    setDescription(ong.description);
-    setDefaultPersonImage(extractPersonImagemFromOng(ong));
-  }, [ong]);
+  if (isLoadingOng) {
+    return <Text>Carregando ong...</Text>;
+  }
 
   function onSelectPersonImage({ color, image }) {
     ong.image = `https://ajudae.com.br/${image}.png`;
@@ -97,8 +104,12 @@ const EditOng = ({ navigation, route: { params: ong } }) => {
       );
     }
 
+    await queryCache.invalidateQueries(['organization', ong.id]);
+    await queryCache.invalidateQueries(['organization']);
+
     presentMessage('Sucesso', 'A ONG foi atualizada com sucesso!');
-    navigation.navigate('ProfileUser'); // TODO: Alterar depois a rota para retornar a listagem de ongs
+
+    navigation.navigate('OngInfo');
   }
 
   return (

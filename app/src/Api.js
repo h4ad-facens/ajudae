@@ -74,16 +74,16 @@ export default {
   getOngsByUser: async (userId) => {
     const token = await AsyncStorage.getItem('ajudae@token');
 
-    return await fetch(`${BASE_API}/ongs?userId=${userId}`, {
+    const request = await fetch(`${BASE_API}/ongs?userId=${userId}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: token,
       },
-    })
-      .then(async (request) => await request.json())
-      .catch(() => null);
+    });
+
+    return await request.json();
   },
   getCausesByOng: async (queryKey, ongId) => {
     const token = await AsyncStorage.getItem('ajudae@token');
@@ -99,6 +99,20 @@ export default {
         },
       },
     );
+
+    return request.json();
+  },
+  getOngById: async (queryKey, ongId) => {
+    const token = await AsyncStorage.getItem('ajudae@token');
+
+    const request = await fetch(`${BASE_API}/ongs/${ongId}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    });
 
     return request.json();
   },

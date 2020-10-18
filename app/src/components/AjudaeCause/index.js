@@ -35,7 +35,11 @@ const AjudaeCause = ({ cause, isEditMode = true }) => {
 
   async function onClickRemove() {
     await deleteCause(cause.id);
-    await queryCache.invalidateQueries(['organization', cause.ong.id]);
+    await queryCache.invalidateQueries([
+      'organization',
+      cause.ong.id,
+      'causes',
+    ]);
   }
 
   return (
