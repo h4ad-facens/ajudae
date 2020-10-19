@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 
+import AddCause from '../AddCause';
 import CausesExpired from '../CausesExpired';
 import ProfileUser from '../ProfileUser';
 import AddOng from '../AddOng';
@@ -16,5 +17,6 @@ export default Profile = () => (
     <Tab.Screen name="EditOng" component={EditOng} />
     <Tab.Screen name="OngInfo" component={OngInfo} />
     <Tab.Screen name="CausesExpired" component={CausesExpired} />
+    <Tab.Screen name="AddCause" component={AddCause} />
   </Tab.Navigator>
 );
