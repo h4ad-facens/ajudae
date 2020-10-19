@@ -58,6 +58,7 @@ const OngInfo = ({ navigation, route: { params: oldOng } }) => {
           text="Adicionar nova causa"
           IconSvg={addButtonIconSvg}
           iconFill="none"
+          onPress={() => navigation.navigate('AddCause', ong)}
         />
         <DefaultButton
           text="Ver causas expiradas"

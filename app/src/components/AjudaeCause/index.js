@@ -38,7 +38,12 @@ const AjudaeCause = ({ cause, isEditMode = true }) => {
     await queryCache.invalidateQueries([
       'organization',
       cause.ong.id,
-      'causes',
+      'causes/unexpired',
+    ]);
+    await queryCache.invalidateQueries([
+      'organization',
+      cause.ong.id,
+      'causes/expired',
     ]);
   }
 
