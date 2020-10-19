@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { Fragment, useState } from 'react';
 import { Text } from 'react-native';
-import { useQuery } from 'react-query';
+import { useInfiniteQuery, useQuery } from 'react-query';
 
 import Api from '../../Api';
 import addButtonIconSvg from '../../assets/add-button.svg';
+import PlusIcon from '../../assets/plus.svg';
 import readerButtonIconSvg from '../../assets/reader-button.svg';
 import scheduleButtonIconSvg from '../../assets/schedule-button.svg';
 import AjudaeBackButton from '../../components/AjudaeBackButton';
@@ -13,14 +14,25 @@ import DefaultButton from '../../components/DefaultButton';
 import { Container, Scroller } from './styles';
 
 const OngInfo = ({ navigation, route: { params: oldOng } }) => {
+  const [canFetchMore, setCanFetchMore] = useState(true);
+
+  const { isFetching, data, fetchMore } = useInfiniteQuery(
+    ['organization', oldOng.id, 'causes/unexpired'],
+    async (key, organizationId, causeKey, currentPage) => {
+      return await Api.getCausesByOng(key, oldOng.id, currentPage || 1);
+    },
+    {
+      getFetchMore: (lastPage, allPages) => {
+        setCanFetchMore(!!lastPage?.length);
+
+        return (allPages?.length || 0) + 1;
+      },
+    },
+  );
+
   const { isLoading: isLoadingOng, data: ong } = useQuery(
     ['organization', oldOng?.id],
     Api.getOngById,
-  );
-
-  const { isLoading, data } = useQuery(
-    ['organization', oldOng?.id, 'causes'],
-    Api.getCausesByOng,
   );
 
   if (!oldOng) {
@@ -51,18 +63,35 @@ const OngInfo = ({ navigation, route: { params: oldOng } }) => {
           text="Ver causas expiradas"
           IconSvg={scheduleButtonIconSvg}
           iconFill="none"
+          onPress={() => navigation.navigate('CausesExpired', ong)}
         />
-        {isLoading && <Text>Carregando causas...</Text>}
-        {data &&
-          data.map((cause) => {
+        {Array.isArray(data) &&
+          data.map((causePage, i) => {
             return (
-              <AjudaeCause
-                key={cause.id.toString()}
-                cause={cause}
-                isEditMode={true}
-              />
+              <Fragment key={i.toString()}>
+                {Array.isArray(causePage) &&
+                  causePage.map((cause, index) => (
+                    <AjudaeCause
+                      key={index}
+                      cause={cause}
+                      isEditMode={true}
+                    />
+                  ))}
+              </Fragment>
             );
           })}
+        {isFetching && <Text>Carregando causas...</Text>}
+        {canFetchMore && (
+          <DefaultButton
+            text="Carregar mais..."
+            IconSvg={PlusIcon}
+            width="12"
+            height="12"
+            onPress={() => {
+              fetchMore();
+            }}
+          />
+        )}
       </Scroller>
     </Container>
   );

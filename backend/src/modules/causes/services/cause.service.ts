@@ -43,7 +43,7 @@ export class CauseService {
    * @param options As opções ao buscar várias causas
    */
   public async listMany(options: CauseManyPaginationOptions): Promise<CauseEntity[]> {
-    const { search, limit = 15, page = 1, relations = [], ongId } = options;
+    const { search, limit = 15, page = 1, relations = [], ongId, filterBy } = options;
 
     const normalizedLimit = Math.min(100, Math.max(1, limit));
     const normalizedPage = Math.max(1, page);
@@ -52,6 +52,13 @@ export class CauseService {
       .where('cause.isActive = :isActive', { isActive: TypeOrmValueTypes.TRUE })
       .take(normalizedLimit)
       .skip((normalizedPage - 1) * limit);
+
+    const now = +new Date();
+
+    if (filterBy === 'expired')
+      query = query.andWhere('cause.expiresAt <= :now', { now })
+    else
+      query = query.andWhere('cause.expiresAt >= :now', { now });
 
     if (relations.some(relation => relation === 'ong'))
       query = query.leftJoinAndSelect('cause.ong', 'ong');
