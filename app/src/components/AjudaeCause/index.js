@@ -47,6 +47,9 @@ const AjudaeCause = ({ cause, isEditMode = true }) => {
     ]);
   }
 
+  const expiresAt = new Date(+cause.expiresAt);
+  const expiresAtString = `${expiresAt.getDate()}/${expiresAt.getMonth()}/${expiresAt.getFullYear()}`;
+
   return (
     <Container>
       {isEditMode && (
@@ -61,7 +64,7 @@ const AjudaeCause = ({ cause, isEditMode = true }) => {
         />
         <Info isEditMode={isEditMode}>
           <Title>{cause.ong.name}</Title>
-          <ExpiresAt>Expira em 30 de out de 2020</ExpiresAt>
+          <ExpiresAt>Expira em {expiresAtString}</ExpiresAt>
         </Info>
       </Header>
       <Body isEditMode={isEditMode}>
