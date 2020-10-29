@@ -11,3 +11,5 @@ export const Scroller = styled.ScrollView`
   flex: 1;
   padding: 0 28px;
 `;
+
+export const RedirectButton = styled.TouchableOpacity``;
