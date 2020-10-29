@@ -10,9 +10,10 @@ const AjudaeInput = ({
   password,
   iconFill = '#BBB',
   textAreaMode = false,
+  borderRadius = 12,
 }) => {
   return (
-    <InputArea>
+    <InputArea borderRadius={borderRadius}>
       <AjudaeSpacing marginTop="13px">
         <IconSvg width="20" height="20" fill={iconFill} />
       </AjudaeSpacing>

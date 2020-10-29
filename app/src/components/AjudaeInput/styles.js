@@ -5,7 +5,7 @@ export const InputArea = styled.View`
   ${(props) => (props.multiline ? 'min-height: 140px;' : '')}
   background-color: #fff;
   flex-direction: row;
-  border-radius: 12px;
+  border-radius: ${(props) => props.borderRadius}px;
   border: 2px solid #d9d9d9;
   padding-left: 22px;
   align-items: flex-start;

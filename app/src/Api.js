@@ -102,6 +102,23 @@ export default {
 
     return request.json();
   },
+  getCauses: async (queryKey, page) => {
+    const token = await AsyncStorage.getItem('ajudae@token');
+
+    const request = await fetch(
+      `${BASE_API}/causes?relations=ong&page=${page}&limit=8`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      },
+    );
+
+    return request.json();
+  },
   getExpiredCausesByOng: async (queryKey, ongId, page) => {
     const token = await AsyncStorage.getItem('ajudae@token');
 
