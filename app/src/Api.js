@@ -85,6 +85,17 @@ export default {
 
     return await request.json();
   },
+  getOngs: async (page) => {
+    const request = await fetch(`${BASE_API}/ongs?page=${page}&limit=8`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return await request.json();
+  },
   getCausesByOng: async (queryKey, ongId, page) => {
     const token = await AsyncStorage.getItem('ajudae@token');
 
