@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
+import { View } from 'react-native';
 import { useInfiniteQuery } from 'react-query';
 
 import Api from '../../Api';
 import PlusIcon from '../../assets/plus.svg';
-import AjudaeCause from '../../components/AjudaeCause';
 import AjudaeLoading from '../../components/AjudaeLoading';
-import AjudaeSpacing from '../../components/AjudaeSpacing';
+import AjudaeOng from '../../components/AjudaeOng';
 import DefaultButton from '../../components/DefaultButton';
-import { Container, RedirectButton, Scroller } from './styles';
+import { AjudaeOngTouchButton, Container, OngList, Scroller } from './styles';
 
-const ListCauses = ({ navigation }) => {
+const ListOngs = ({ navigation }) => {
   const [canFetchMore, setCanFetchMore] = useState(false);
 
   const { isFetching, data, fetchMore } = useInfiniteQuery(
-    ['causes'],
-    async (key, currentPage) => {
-      const data = await Api.getCauses(key, currentPage || 1);
+    ['organization'],
+    async (key, organizationId, causeKey, currentPage) => {
+      const data = await Api.getOngs(currentPage || 1);
 
       setCanFetchMore(data?.length >= 8);
 
@@ -28,20 +28,23 @@ const ListCauses = ({ navigation }) => {
     },
   );
 
-  const listCauses = data?.flat(2);
+  const listOngs = data?.flat(2);
 
   return (
     <Container>
       <Scroller>
-        <AjudaeSpacing marginTop="24px" />
-        {Array.isArray(listCauses) &&
-          listCauses.map((cause, index) => (
-            <RedirectButton
-              key={index}
-              onPress={() => navigation.navigate('CauseDetail', cause)}>
-              <AjudaeCause key={index} cause={cause} isEditMode={false} />
-            </RedirectButton>
-          ))}
+        <OngList>
+          {Array.isArray(listOngs) &&
+            listOngs.map((ong, index) => {
+              return (
+                <AjudaeOngTouchButton
+                  key={index}
+                  onPress={() => navigation.navigate('OngDetail', ong)}>
+                  <AjudaeOng ong={ong} style={index % 3} />
+                </AjudaeOngTouchButton>
+              );
+            })}
+        </OngList>
         {isFetching && <AjudaeLoading />}
         {canFetchMore && (
           <DefaultButton
@@ -59,4 +62,4 @@ const ListCauses = ({ navigation }) => {
   );
 };
 
-export default ListCauses;
+export default ListOngs;

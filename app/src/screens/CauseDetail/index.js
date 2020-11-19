@@ -47,7 +47,7 @@ const CauseDetail = ({ navigation, route: { params: cause } }) => {
   return (
     <Container>
       <Scroller>
-        <AjudaeBackButton navigation={navigation} url="ListCauses" />
+        <AjudaeBackButton navigation={navigation} />
         <AjudaeCause cause={cause} isEditMode={false} />
         <AjudaeSpacing marginTop="16px" marginBottom="32px">
           <BoldText>Tem interesse em ajudar?</BoldText>

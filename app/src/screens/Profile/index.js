@@ -10,7 +10,7 @@ import OngInfo from '../OngInfo';
 
 const Tab = createBottomTabNavigator();
 
-export default Profile = () => (
+export default () => (
   <Tab.Navigator tabBar={() => <></>}>
     <Tab.Screen name="ProfileUser" component={ProfileUser} />
     <Tab.Screen name="AddOng" component={AddOng} />

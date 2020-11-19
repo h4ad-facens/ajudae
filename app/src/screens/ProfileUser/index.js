@@ -1,12 +1,12 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import React, { useContext } from 'react';
-import { Text } from 'react-native';
 import { useQuery } from 'react-query';
 
 import Api from '../../Api';
 import LogoutIcon from '../../assets/logout.svg';
 import PlusIcon from '../../assets/plus.svg';
 import AjudaeHeader from '../../components/AjudaeHeader';
+import AjudaeLoading from '../../components/AjudaeLoading';
 import DefaultButton from '../../components/DefaultButton';
 import { UserContext } from '../../contexts/UserContext';
 import {
@@ -23,7 +23,7 @@ import {
 export default ({ navigation }) => {
   const { state: user } = useContext(UserContext);
   const { isLoading, data: listOngs } = useQuery(
-    'organization',
+    ['user', user.id, 'organization'],
     () => Api.getOngsByUser(user.id),
   );
 
@@ -31,6 +31,7 @@ export default ({ navigation }) => {
     await AsyncStorage.removeItem('ajudae@token');
 
     navigation.reset({
+      index: 0,
       routes: [{ name: 'SignIn' }],
     });
   };
@@ -68,17 +69,17 @@ export default ({ navigation }) => {
             height="18"
             onPress={handleLogoutClick}
           />
-          {isLoading && <Text>Carregando suas ongs...</Text>}
-          {listOngs?.map((ong) => (
-            <CustomOngs key={ong.id} onPress={() => handleClickOng(ong)}>
-              <CustomOngTitle>{ong.name}</CustomOngTitle>
-              <CustomOngCreated>Criada em {ong.createdAt}</CustomOngCreated>
-              <CustomOngDescription>
-                {ong.description || 'Não há descrição para essa ONG.'}
-              </CustomOngDescription>
-            </CustomOngs>
-          ))}
         </ButtonArea>
+        {isLoading && <AjudaeLoading />}
+        {listOngs?.map((ong, index) => (
+          <CustomOngs key={index} onPress={() => handleClickOng(ong)}>
+            <CustomOngTitle>{ong.name}</CustomOngTitle>
+            <CustomOngCreated>Criada em {ong.createdAt}</CustomOngCreated>
+            <CustomOngDescription>
+              {ong.description || 'Não há descrição para essa ONG.'}
+            </CustomOngDescription>
+          </CustomOngs>
+        ))}
       </Scroller>
     </Container>
   );

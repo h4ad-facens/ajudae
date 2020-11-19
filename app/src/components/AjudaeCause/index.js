@@ -73,7 +73,7 @@ const AjudaeCause = ({ cause, isEditMode = true }) => {
       </Body>
       <Footer>
         {cause.categories.split(',').map((category) => {
-          return <Hashtag>#{category}</Hashtag>;
+          return <Hashtag key={category}>#{category}</Hashtag>;
         })}
       </Footer>
     </Container>

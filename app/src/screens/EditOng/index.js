@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, Text } from 'react-native';
+import React, { useState } from 'react';
+import { Alert } from 'react-native';
 import { useQuery, useQueryCache } from 'react-query';
 import Api from '../../Api';
 import JobIcon from '../../assets/job.svg';
@@ -9,6 +9,7 @@ import WhatsAppIcon from '../../assets/whatsapp.svg';
 import AjudaeBackButton from '../../components/AjudaeBackButton';
 import AjudaeHeader from '../../components/AjudaeHeader';
 import AjudaeInput from '../../components/AjudaeInput';
+import AjudaeLoading from '../../components/AjudaeLoading';
 import AjudaePersonSelect from '../../components/AjudaePersonSelect';
 import AjudaeSaveButton from '../../components/AjudaeSaveButton';
 import AjudaeSpacing from '../../components/AjudaeSpacing';
@@ -66,7 +67,18 @@ const EditOng = ({ navigation, route: { params: oldOng } }) => {
   }
 
   if (isLoadingOng) {
-    return <Text>Carregando ong...</Text>;
+    return (
+      <Container>
+        <Scroller>
+          <AjudaeHeader
+            title="Editar uma ONG"
+            description="Por favor, preencha os campos abaixo:"
+            showDetail={true}
+          />
+          <AjudaeLoading />
+        </Scroller>
+      </Container>
+    );
   }
 
   function onSelectPersonImage({ color, image }) {

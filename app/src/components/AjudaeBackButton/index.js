@@ -14,7 +14,13 @@ const AjudaeBackButton = ({
     <ButtonContainer
       backgroundColor={backgroundColor}
       disabledMargins={disabledMargins}
-      onPress={() => navigation.navigate(url)}>
+      onPress={() => {
+        if (url) {
+          navigation.navigate(url);
+        } else {
+          navigation.goBack();
+        }
+      }}>
       <LeftArrowWhiteIcon width="16px" height="9px" fill="#FFF" />
     </ButtonContainer>
   );

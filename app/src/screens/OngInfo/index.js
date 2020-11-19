@@ -1,5 +1,4 @@
 import React, { Fragment, useState } from 'react';
-import { Text } from 'react-native';
 import { useInfiniteQuery, useQuery } from 'react-query';
 
 import Api from '../../Api';
@@ -10,21 +9,24 @@ import scheduleButtonIconSvg from '../../assets/schedule-button.svg';
 import AjudaeBackButton from '../../components/AjudaeBackButton';
 import AjudaeCause from '../../components/AjudaeCause';
 import AjudaeHeader from '../../components/AjudaeHeader';
+import AjudaeLoading from '../../components/AjudaeLoading';
 import DefaultButton from '../../components/DefaultButton';
 import { Container, Scroller } from './styles';
 
 const OngInfo = ({ navigation, route: { params: oldOng } }) => {
-  const [canFetchMore, setCanFetchMore] = useState(true);
+  const [canFetchMore, setCanFetchMore] = useState(false);
 
   const { isFetching, data, fetchMore } = useInfiniteQuery(
     ['organization', oldOng.id, 'causes/unexpired'],
     async (key, organizationId, causeKey, currentPage) => {
-      return await Api.getCausesByOng(key, oldOng.id, currentPage || 1);
+      const data = await Api.getCausesByOng(oldOng.id, currentPage || 1);
+
+      setCanFetchMore(data?.length >= 8);
+
+      return data;
     },
     {
       getFetchMore: (lastPage, allPages) => {
-        setCanFetchMore(!!lastPage?.length);
-
         return (allPages?.length || 0) + 1;
       },
     },
@@ -40,7 +42,15 @@ const OngInfo = ({ navigation, route: { params: oldOng } }) => {
   }
 
   if (isLoadingOng) {
-    return <Text>Carregando ong...</Text>;
+    return (
+      <Container>
+        <Scroller>
+          <AjudaeBackButton url="ProfileUser" navigation={navigation} />
+          <AjudaeHeader title="Carregando..." />
+          <AjudaeLoading />
+        </Scroller>
+      </Container>
+    );
   }
 
   return (
@@ -72,16 +82,12 @@ const OngInfo = ({ navigation, route: { params: oldOng } }) => {
               <Fragment key={i.toString()}>
                 {Array.isArray(causePage) &&
                   causePage.map((cause, index) => (
-                    <AjudaeCause
-                      key={index}
-                      cause={cause}
-                      isEditMode={true}
-                    />
+                    <AjudaeCause key={index} cause={cause} isEditMode={true} />
                   ))}
               </Fragment>
             );
           })}
-        {isFetching && <Text>Carregando causas...</Text>}
+        {isFetching && <AjudaeLoading />}
         {canFetchMore && (
           <DefaultButton
             text="Carregar mais..."

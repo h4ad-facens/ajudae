@@ -85,11 +85,22 @@ export default {
 
     return await request.json();
   },
-  getCausesByOng: async (queryKey, ongId, page) => {
+  getOngs: async (page) => {
+    const request = await fetch(`${BASE_API}/ongs?page=${page}&limit=8`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return await request.json();
+  },
+  getCausesByOng: async (ongId, page) => {
     const token = await AsyncStorage.getItem('ajudae@token');
 
     const request = await fetch(
-      `${BASE_API}/causes?relations=ong&ongId=${ongId}&page=${page}`,
+      `${BASE_API}/causes?relations=ong&ongId=${ongId}&page=${page}&limit=8`,
       {
         method: 'GET',
         headers: {
@@ -119,11 +130,11 @@ export default {
 
     return request.json();
   },
-  getExpiredCausesByOng: async (queryKey, ongId, page) => {
+  getExpiredCausesByOng: async (ongId, page) => {
     const token = await AsyncStorage.getItem('ajudae@token');
 
     const request = await fetch(
-      `${BASE_API}/causes?relations=ong&filterBy=expired&ongId=${ongId}&page=${page}`,
+      `${BASE_API}/causes?relations=ong&filterBy=expired&ongId=${ongId}&page=${page}&limit=8`,
       {
         method: 'GET',
         headers: {

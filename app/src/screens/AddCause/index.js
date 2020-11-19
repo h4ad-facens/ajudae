@@ -77,6 +77,7 @@ const AddCause = ({ navigation, route: { params: ong } }) => {
       ong.id,
       'causes/expired',
     ]);
+    await queryCache.invalidateQueries(['causes']);
     presentMessage('Sucesso', 'A causa foi criada com sucesso!');
     navigation.navigate('OngInfo');
   }

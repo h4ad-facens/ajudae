@@ -74,6 +74,8 @@ export default ({ navigation }) => {
       },
     });
 
+    await AsyncStorage.setItem('ajudae@user', JSON.stringify(user));
+
     navigation.reset({
       routes: [{ name: 'Profile' }],
     });

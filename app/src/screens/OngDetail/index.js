@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
-import { useInfiniteQuery } from 'react-query';
+import { useInfiniteQuery, useQuery } from 'react-query';
 
 import Api from '../../Api';
 import PlusIcon from '../../assets/plus.svg';
+import AjudaeBackButton from '../../components/AjudaeBackButton';
 import AjudaeCause from '../../components/AjudaeCause';
+import AjudaeHeader from '../../components/AjudaeHeader';
 import AjudaeLoading from '../../components/AjudaeLoading';
-import AjudaeSpacing from '../../components/AjudaeSpacing';
 import DefaultButton from '../../components/DefaultButton';
-import { Container, RedirectButton, Scroller } from './styles';
+import { AjudaeCauseTouchButton, Container, Scroller } from './styles';
 
-const ListCauses = ({ navigation }) => {
+const OngDetail = ({ navigation, route: { params: ong } }) => {
+  const { isLoading: isLoadingOng, data: newOng } = useQuery(
+    ['organization', ong.id],
+    Api.getOngById,
+  );
+
   const [canFetchMore, setCanFetchMore] = useState(false);
-
   const { isFetching, data, fetchMore } = useInfiniteQuery(
-    ['causes'],
-    async (key, currentPage) => {
-      const data = await Api.getCauses(key, currentPage || 1);
+    ['organization', ong.id, 'causes/unexpired'],
+    async (key, organizationId, causeKey, currentPage) => {
+      const data = await Api.getCausesByOng(ong.id, currentPage || 1);
 
       setCanFetchMore(data?.length >= 8);
 
@@ -27,20 +32,32 @@ const ListCauses = ({ navigation }) => {
       },
     },
   );
-
   const listCauses = data?.flat(2);
+
+  if (isLoadingOng) {
+    return (
+      <Container>
+        <Scroller>
+          <AjudaeBackButton navigation={navigation} url="ListOngs" />
+          <AjudaeHeader title="Carregando..." showDetail={false} />
+          <AjudaeLoading />
+        </Scroller>
+      </Container>
+    );
+  }
 
   return (
     <Container>
       <Scroller>
-        <AjudaeSpacing marginTop="24px" />
+        <AjudaeBackButton navigation={navigation} url="ListOngs" />
+        <AjudaeHeader title={newOng?.name} showDetail={false} />
         {Array.isArray(listCauses) &&
           listCauses.map((cause, index) => (
-            <RedirectButton
+            <AjudaeCauseTouchButton
               key={index}
-              onPress={() => navigation.navigate('CauseDetail', cause)}>
+              onPress={() => navigation.navigate('OngCauseDetail', cause)}>
               <AjudaeCause key={index} cause={cause} isEditMode={false} />
-            </RedirectButton>
+            </AjudaeCauseTouchButton>
           ))}
         {isFetching && <AjudaeLoading />}
         {canFetchMore && (
@@ -59,4 +76,4 @@ const ListCauses = ({ navigation }) => {
   );
 };
 
-export default ListCauses;
+export default OngDetail;
