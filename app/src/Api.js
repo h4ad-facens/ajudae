@@ -100,7 +100,7 @@ export default {
     const token = await AsyncStorage.getItem('ajudae@token');
 
     const request = await fetch(
-      `${BASE_API}/causes?relations=ong&ongId=${ongId}&page=${page}`,
+      `${BASE_API}/causes?relations=ong&ongId=${ongId}&page=${page}&limit=8`,
       {
         method: 'GET',
         headers: {

@@ -6,9 +6,9 @@ import Api from '../../Api';
 import PlusIcon from '../../assets/plus.svg';
 import AjudaeOng from '../../components/AjudaeOng';
 import DefaultButton from '../../components/DefaultButton';
-import { Container } from './styles';
+import { AjudaeOngTouchButton, Container } from './styles';
 
-const ListOngs = () => {
+const ListOngs = ({ navigation }) => {
   const [canFetchMore, setCanFetchMore] = useState(true);
 
   const { isFetching, data, fetchMore } = useInfiniteQuery(
@@ -36,7 +36,14 @@ const ListOngs = () => {
         keyExtractor={(item) => item.id}
         numColumns={2}
         renderItem={(ong) => {
-          return ong && <AjudaeOng ong={ong.item} style={ong.index % 3} />;
+          return (
+            ong && (
+              <AjudaeOngTouchButton
+                onPress={() => navigation.navigate('OngDetail', ong.item)}>
+                <AjudaeOng ong={ong.item} style={ong.index % 3} />
+              </AjudaeOngTouchButton>
+            )
+          );
         }}
       />
       {isFetching && <Text>Carregando ongs...</Text>}

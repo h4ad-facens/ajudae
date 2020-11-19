@@ -9,3 +9,7 @@ export const Container = styled.SafeAreaView`
   display: flex;
   padding: 16px 18px;
 `;
+
+export const AjudaeOngTouchButton = styled.TouchableOpacity`
+  width: 50%;
+`;
