@@ -1,5 +1,4 @@
 import React, { Fragment, useState } from 'react';
-import { Text } from 'react-native';
 import { useInfiniteQuery } from 'react-query';
 
 import Api from '../../Api';
@@ -7,21 +6,24 @@ import PlusIcon from '../../assets/plus.svg';
 import AjudaeBackButton from '../../components/AjudaeBackButton';
 import AjudaeCause from '../../components/AjudaeCause';
 import AjudaeHeader from '../../components/AjudaeHeader';
+import AjudaeLoading from '../../components/AjudaeLoading';
 import DefaultButton from '../../components/DefaultButton';
 import { Container, Scroller } from './styles';
 
 const CausesExpired = ({ navigation, route: { params: oldOng } }) => {
-  const [canFetchMore, setCanFetchMore] = useState(true);
+  const [canFetchMore, setCanFetchMore] = useState(false);
 
   const { isFetching, data, fetchMore } = useInfiniteQuery(
     ['organization', oldOng.id, 'causes/expired'],
     async (key, organizationId, causeKey, currentPage) => {
-      return await Api.getExpiredCausesByOng(key, oldOng.id, currentPage || 1);
+      const data = await Api.getExpiredCausesByOng(oldOng.id, currentPage || 1);
+
+      setCanFetchMore(data?.length >= 8);
+
+      return data;
     },
     {
       getFetchMore: (lastPage, allPages) => {
-        setCanFetchMore(!!lastPage?.length);
-
         return (allPages?.length || 0) + 1;
       },
     },
@@ -43,7 +45,7 @@ const CausesExpired = ({ navigation, route: { params: oldOng } }) => {
               </Fragment>
             );
           })}
-        {isFetching && <Text>Carregando...</Text>}
+        {isFetching && <AjudaeLoading />}
         {canFetchMore && (
           <DefaultButton
             text="Carregar mais..."

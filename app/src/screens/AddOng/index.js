@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useQueryCache } from 'react-query';
 
 import JobIcon from '../../assets/job.svg';
 import ReaderIcon from '../../assets/reader.svg';
@@ -20,6 +21,8 @@ import { Alert } from 'react-native';
 import Api from '../../Api';
 
 const AddOng = ({ navigation }) => {
+  const queryCache = useQueryCache();
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [whatsapp, setWhatsapp] = useState('');
@@ -67,6 +70,9 @@ const AddOng = ({ navigation }) => {
         'OOPS!',
         Array.isArray(message) ? message[0] : message,
       );
+
+    await queryCache.invalidateQueries(['organization']);
+    await queryCache.invalidateQueries(['user']);
 
     presentMessage('Sucesso', 'A ONG foi criada com sucesso!');
     navigation.navigate('ProfileUser');

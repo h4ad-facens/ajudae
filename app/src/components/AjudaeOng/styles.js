@@ -3,6 +3,7 @@ import styled from 'styled-components/native';
 export const Container = styled.View`
   flex: 1;
   background-color: ${(props) => props.backgroundColor};
+  min-height: 210px;
   height: 210px;
   margin: 10px;
   border-radius: 25px;

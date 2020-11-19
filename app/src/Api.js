@@ -96,7 +96,7 @@ export default {
 
     return await request.json();
   },
-  getCausesByOng: async (queryKey, ongId, page) => {
+  getCausesByOng: async (ongId, page) => {
     const token = await AsyncStorage.getItem('ajudae@token');
 
     const request = await fetch(
@@ -130,11 +130,11 @@ export default {
 
     return request.json();
   },
-  getExpiredCausesByOng: async (queryKey, ongId, page) => {
+  getExpiredCausesByOng: async (ongId, page) => {
     const token = await AsyncStorage.getItem('ajudae@token');
 
     const request = await fetch(
-      `${BASE_API}/causes?relations=ong&filterBy=expired&ongId=${ongId}&page=${page}`,
+      `${BASE_API}/causes?relations=ong&filterBy=expired&ongId=${ongId}&page=${page}&limit=8`,
       {
         method: 'GET',
         headers: {

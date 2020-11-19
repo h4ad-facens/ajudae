@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { FlatList, Text } from 'react-native';
+import { View } from 'react-native';
 import { useInfiniteQuery } from 'react-query';
 
 import Api from '../../Api';
 import PlusIcon from '../../assets/plus.svg';
+import AjudaeLoading from '../../components/AjudaeLoading';
 import AjudaeOng from '../../components/AjudaeOng';
 import DefaultButton from '../../components/DefaultButton';
-import { AjudaeOngTouchButton, Container } from './styles';
+import { AjudaeOngTouchButton, Container, OngList, Scroller } from './styles';
 
 const ListOngs = ({ navigation }) => {
-  const [canFetchMore, setCanFetchMore] = useState(true);
+  const [canFetchMore, setCanFetchMore] = useState(false);
 
   const { isFetching, data, fetchMore } = useInfiniteQuery(
     ['organization'],
@@ -31,33 +32,32 @@ const ListOngs = ({ navigation }) => {
 
   return (
     <Container>
-      <FlatList
-        data={listOngs}
-        keyExtractor={(item) => item.id}
-        numColumns={2}
-        renderItem={(ong) => {
-          return (
-            ong && (
-              <AjudaeOngTouchButton
-                onPress={() => navigation.navigate('OngDetail', ong.item)}>
-                <AjudaeOng ong={ong.item} style={ong.index % 3} />
-              </AjudaeOngTouchButton>
-            )
-          );
-        }}
-      />
-      {isFetching && <Text>Carregando ongs...</Text>}
-      {canFetchMore && (
-        <DefaultButton
-          text="Carregar mais..."
-          IconSvg={PlusIcon}
-          width="12"
-          height="12"
-          onPress={() => {
-            fetchMore();
-          }}
-        />
-      )}
+      <Scroller>
+        <OngList>
+          {Array.isArray(listOngs) &&
+            listOngs.map((ong, index) => {
+              return (
+                <AjudaeOngTouchButton
+                  key={index}
+                  onPress={() => navigation.navigate('OngDetail', ong)}>
+                  <AjudaeOng ong={ong} style={index % 3} />
+                </AjudaeOngTouchButton>
+              );
+            })}
+        </OngList>
+        {isFetching && <AjudaeLoading />}
+        {canFetchMore && (
+          <DefaultButton
+            text="Carregar mais..."
+            IconSvg={PlusIcon}
+            width="12"
+            height="12"
+            onPress={() => {
+              fetchMore();
+            }}
+          />
+        )}
+      </Scroller>
     </Container>
   );
 };

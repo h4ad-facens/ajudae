@@ -1,16 +1,16 @@
-import React, { Fragment, useState } from 'react';
-import { Text } from 'react-native';
+import React, { useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
 
 import Api from '../../Api';
 import PlusIcon from '../../assets/plus.svg';
 import AjudaeCause from '../../components/AjudaeCause';
+import AjudaeLoading from '../../components/AjudaeLoading';
 import AjudaeSpacing from '../../components/AjudaeSpacing';
 import DefaultButton from '../../components/DefaultButton';
 import { Container, RedirectButton, Scroller } from './styles';
 
 const ListCauses = ({ navigation }) => {
-  const [canFetchMore, setCanFetchMore] = useState(true);
+  const [canFetchMore, setCanFetchMore] = useState(false);
 
   const { isFetching, data, fetchMore } = useInfiniteQuery(
     ['causes'],
@@ -28,29 +28,21 @@ const ListCauses = ({ navigation }) => {
     },
   );
 
+  const listCauses = data?.flat(2);
+
   return (
     <Container>
       <Scroller>
         <AjudaeSpacing marginTop="24px" />
-        {Array.isArray(data) &&
-          data.map((causePage, i) => {
-            return (
-              <Fragment key={'Fragment' + i.toString()}>
-                {Array.isArray(causePage) &&
-                  causePage.map((cause, index) => (
-                    <RedirectButton
-                      onPress={() => navigation.navigate('CauseDetail', cause)}>
-                      <AjudaeCause
-                        key={'Cause' + index.toString()}
-                        cause={cause}
-                        isEditMode={false}
-                      />
-                    </RedirectButton>
-                  ))}
-              </Fragment>
-            );
-          })}
-        {isFetching && <Text>Carregando causas...</Text>}
+        {Array.isArray(listCauses) &&
+          listCauses.map((cause, index) => (
+            <RedirectButton
+              key={index}
+              onPress={() => navigation.navigate('CauseDetail', cause)}>
+              <AjudaeCause key={index} cause={cause} isEditMode={false} />
+            </RedirectButton>
+          ))}
+        {isFetching && <AjudaeLoading />}
         {canFetchMore && (
           <DefaultButton
             text="Carregar mais..."

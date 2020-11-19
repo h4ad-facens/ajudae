@@ -8,7 +8,7 @@ import AjudaeCause from '../../components/AjudaeCause';
 import AjudaeHeader from '../../components/AjudaeHeader';
 import AjudaeLoading from '../../components/AjudaeLoading';
 import DefaultButton from '../../components/DefaultButton';
-import { Container, Scroller } from './styles';
+import { AjudaeCauseTouchButton, Container, Scroller } from './styles';
 
 const OngDetail = ({ navigation, route: { params: ong } }) => {
   const { isLoading: isLoadingOng, data: newOng } = useQuery(
@@ -16,11 +16,11 @@ const OngDetail = ({ navigation, route: { params: ong } }) => {
     Api.getOngById,
   );
 
-  const [canFetchMore, setCanFetchMore] = useState(true);
+  const [canFetchMore, setCanFetchMore] = useState(false);
   const { isFetching, data, fetchMore } = useInfiniteQuery(
     ['organization', ong.id, 'causes/unexpired'],
     async (key, organizationId, causeKey, currentPage) => {
-      const data = await Api.getCausesByOng(key, ong.id, currentPage || 1);
+      const data = await Api.getCausesByOng(ong.id, currentPage || 1);
 
       setCanFetchMore(data?.length >= 8);
 
@@ -53,7 +53,11 @@ const OngDetail = ({ navigation, route: { params: ong } }) => {
         <AjudaeHeader title={newOng?.name} showDetail={false} />
         {Array.isArray(listCauses) &&
           listCauses.map((cause, index) => (
-            <AjudaeCause key={index} cause={cause} isEditMode={false} />
+            <AjudaeCauseTouchButton
+              key={index}
+              onPress={() => navigation.navigate('OngCauseDetail', cause)}>
+              <AjudaeCause key={index} cause={cause} isEditMode={false} />
+            </AjudaeCauseTouchButton>
           ))}
         {isFetching && <AjudaeLoading />}
         {canFetchMore && (
