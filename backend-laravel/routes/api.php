@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +15,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('auth')->group(function () {
+    Route::post('/local', [AuthController::class, 'local'])->name('auth.local');
+});
+
+Route::prefix('users')->group(function () {
+    Route::post('/', [UserController::class, 'store'])->name('users.createOne');
+
+    Route::middleware(['auth:sanctum'])->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('users.getMany');
+        Route::get('/me', [UserController::class, 'me'])->name('users.getMe');
+        Route::get('/{user}', [UserController::class, 'show'])->name('users.getOne');
+        Route::put('/{user}', [UserController::class, 'update'])->name('users.replaceOne');
+        Route::delete('/{user}', [UserController::class, 'destroy'])->name('users.deleteOne');
+    });
 });
