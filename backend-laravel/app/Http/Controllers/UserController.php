@@ -110,6 +110,8 @@ class UserController extends Controller
         $onValidate = function () use ($user) {
             $user->tokens()->delete();
             $user->delete();
+
+            return response()->noContent();
         };
 
         if ($user->id === $request->user()->id)

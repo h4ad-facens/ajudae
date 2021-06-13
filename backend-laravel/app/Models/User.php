@@ -58,4 +58,12 @@ class User extends Authenticatable
     public function isAdmin() {
         return $this->tokenCan('roles:admin');
     }
+
+    /**
+     * Get the ongs of the user.
+     */
+    public function ongs()
+    {
+        return $this->hasMany(Ong::class, 'userId', 'id');
+    }
 }

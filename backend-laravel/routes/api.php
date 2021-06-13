@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OngController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,5 +29,16 @@ Route::prefix('users')->group(function () {
         Route::get('/{user}', [UserController::class, 'show'])->name('users.getOne');
         Route::put('/{user}', [UserController::class, 'update'])->name('users.replaceOne');
         Route::delete('/{user}', [UserController::class, 'destroy'])->name('users.deleteOne');
+    });
+});
+
+Route::prefix('ongs')->group(function () {
+    Route::get('/', [OngController::class, 'index'])->name('ongs.getMany');
+    Route::get('/{entity}', [OngController::class, 'show'])->name('ongs.getOne');
+
+    Route::middleware(['auth:sanctum'])->group(function () {
+        Route::post('/', [OngController::class, 'store'])->name('ongs.createOne');
+        Route::put('/{entity}', [OngController::class, 'update'])->name('ongs.replaceOne');
+        Route::delete('/{entity}', [OngController::class, 'destroy'])->name('ongs.deleteOne');
     });
 });
