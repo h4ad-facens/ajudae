@@ -19,6 +19,13 @@ class OngController extends Controller
     public function index(Request $request)
     {
         $limit = $request->query('limit', 15);
+        $userId = $request->query('userId', null);
+
+        $query = Ong::where('userId', '!=', 0);
+
+        if ($userId != null)
+            $query = $query->where('userId', '=', (int) $userId);
+
         $safeLimit = max(2, min(100, $limit));
 
         return Ong::simplePaginate($safeLimit);

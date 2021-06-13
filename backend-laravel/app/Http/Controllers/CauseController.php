@@ -22,9 +22,10 @@ class CauseController extends Controller
         $limit = $request->query('limit', 15);
         $search = $request->query('search', null);
         $filterBy = $request->query('filterBy', null);
+        $relations = $request->query('relations', null);
         $ongId = $request->query('ongId', null);
 
-        $query = Cause::with(['ong']);
+        $query = Cause::with($relations != null ? [$relations] : []);
 
         if ($search != null && $search != '')
             $query = $query->where('description', 'like', $search);
