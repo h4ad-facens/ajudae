@@ -54,6 +54,10 @@ A primeira versão foi desenvolvida em NestJS para a matéria de PA7 e a segunda
 - [Maria Alice](https://github.com/zmariaalice)
 - [Ruziel Junior](https://github.com/ruzieljr)
 
+#### Vídeo de Apresentação
+
+https://user-images.githubusercontent.com/12551007/121821602-618d8480-cc70-11eb-90e8-acf77577d1a4.mp4
+
 ### PA7
 
 - [Vinícius Lourenço](https://github.com/H4ad)
