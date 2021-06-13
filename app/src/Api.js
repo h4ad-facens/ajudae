@@ -1,16 +1,16 @@
 import AsyncStorage from '@react-native-community/async-storage';
 
-const BASE_API = 'https://facens-ajudae-api.herokuapp.com';
+const BASE_API = 'https://127.0.0.1:8000/api';
 
 export default {
-  signIn: async (username, password) => {
+  signIn: async (email, password) => {
     return await fetch(`${BASE_API}/auth/local`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ email, password }),
     })
       .then(async (request) => await request.json())
       .catch(() => null);
@@ -83,7 +83,7 @@ export default {
       },
     });
 
-    return await request.json();
+    return await request.json().then(response => response.data);
   },
   getOngs: async (page) => {
     const request = await fetch(`${BASE_API}/ongs?page=${page}&limit=8`, {
@@ -177,6 +177,8 @@ export default {
   },
   createCause: async (payload) => {
     const token = await AsyncStorage.getItem('ajudae@token');
+
+    console.log(payload);
 
     return await fetch(`${BASE_API}/causes`, {
       method: 'POST',

@@ -6,7 +6,14 @@ import { QueryCache, ReactQueryCacheProvider } from 'react-query';
 import UserContextProvider from './src/contexts/UserContext';
 import MainStack from './src/stacks/MainStack';
 
-const queryCache = new QueryCache();
+const queryCache = new QueryCache({
+  defaultConfig: {
+    queries: {
+      refetchOnMount: true,
+      refetchOnWindowFocus: true,
+    }
+  }
+});
 
 if (__DEV__) {
   LogBox.ignoreLogs(['Setting a timer']);

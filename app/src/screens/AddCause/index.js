@@ -45,15 +45,7 @@ const AddCause = ({ navigation, route: { params: ong } }) => {
     const payload = {
       categories,
       description,
-      expiresAt: +new Date(
-        expiresAt.getFullYear(),
-        expiresAt.getMonth(),
-        expiresAt.getDate(),
-        23,
-        59,
-        59,
-        999,
-      ),
+      expiresAt: expiresAt.toISOString(),
       ongId: ong.id,
     };
 

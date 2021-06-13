@@ -71,7 +71,7 @@ export default ({ navigation }) => {
           />
         </ButtonArea>
         {isLoading && <AjudaeLoading />}
-        {listOngs?.map((ong, index) => (
+        {(listOngs || []).map((ong, index) => (
           <CustomOngs key={index} onPress={() => handleClickOng(ong)}>
             <CustomOngTitle>{ong.name}</CustomOngTitle>
             <CustomOngCreated>Criada em {ong.createdAt}</CustomOngCreated>

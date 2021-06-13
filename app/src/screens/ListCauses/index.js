@@ -17,9 +17,9 @@ const ListCauses = ({ navigation }) => {
     async (key, currentPage) => {
       const data = await Api.getCauses(key, currentPage || 1);
 
-      setCanFetchMore(data?.length >= 8);
+      setCanFetchMore(data?.next_page_url != null);
 
-      return data;
+      return data.data;
     },
     {
       getFetchMore: (lastPage, allPages) => {
@@ -29,6 +29,8 @@ const ListCauses = ({ navigation }) => {
   );
 
   const listCauses = data?.flat(2);
+
+  console.log(listCauses);
 
   return (
     <Container>

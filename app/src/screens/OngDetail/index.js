@@ -22,9 +22,9 @@ const OngDetail = ({ navigation, route: { params: ong } }) => {
     async (key, organizationId, causeKey, currentPage) => {
       const data = await Api.getCausesByOng(ong.id, currentPage || 1);
 
-      setCanFetchMore(data?.length >= 8);
+      setCanFetchMore(data?.next_page_url != null);
 
-      return data;
+      return data.data;
     },
     {
       getFetchMore: (lastPage, allPages) => {

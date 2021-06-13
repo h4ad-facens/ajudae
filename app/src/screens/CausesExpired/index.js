@@ -18,9 +18,9 @@ const CausesExpired = ({ navigation, route: { params: oldOng } }) => {
     async (key, organizationId, causeKey, currentPage) => {
       const data = await Api.getExpiredCausesByOng(oldOng.id, currentPage || 1);
 
-      setCanFetchMore(data?.length >= 8);
+      setCanFetchMore(data?.next_page_url != null);
 
-      return data;
+      return data.data;
     },
     {
       getFetchMore: (lastPage, allPages) => {

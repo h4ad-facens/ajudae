@@ -47,7 +47,7 @@ const AjudaeCause = ({ cause, isEditMode = true }) => {
     ]);
   }
 
-  const expiresAt = new Date(+cause.expiresAt);
+  const expiresAt = new Date(cause.expiresAt);
   const expiresAtString = `${expiresAt.getDate()}/${expiresAt.getMonth()}/${expiresAt.getFullYear()}`;
 
   return (

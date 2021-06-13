@@ -118,6 +118,7 @@ const EditOng = ({ navigation, route: { params: oldOng } }) => {
 
     await queryCache.invalidateQueries(['organization', ong.id]);
     await queryCache.invalidateQueries(['organization']);
+    await queryCache.invalidateQueries(['user']);
 
     presentMessage('Sucesso', 'A ONG foi atualizada com sucesso!');
 

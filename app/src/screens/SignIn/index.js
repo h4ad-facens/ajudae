@@ -24,8 +24,8 @@ import ProfileIcon from '../../assets/profile.svg';
 import LockIcon from '../../assets/lock.svg';
 
 export default ({ navigation }) => {
-  const [emailField, setEmailField] = useState('');
-  const [passwordField, setPasswordField] = useState('');
+  const [emailField, setEmailField] = useState('vinicius.cardoso@facens.br');
+  const [passwordField, setPasswordField] = useState('123456');
   const { dispatch: userDispatch } = useContext(UserContext);
 
   const goTo = (screenName) => {
@@ -50,18 +50,19 @@ export default ({ navigation }) => {
 
     let jsonSign = await Api.signIn(emailField, passwordField);
 
+    console.log(jsonSign);
+
     if (jsonSign === null)
       return presentMessage(
         'OOPS!',
         'Ocorreu um erro desconhecido, por favor, tente novamente!',
       );
 
-    const { message, token, expiresAt } = jsonSign;
+    const { message, token } = jsonSign;
 
     if (message) return presentMessage('OOPS!', message);
 
-    await AsyncStorage.setItem('ajudae@token', token);
-    await AsyncStorage.setItem('ajudae@expiresat', String(expiresAt));
+    await AsyncStorage.setItem('ajudae@token', `Bearer ${token}`);
 
     let { message: errorOnMe, ...user } = await Api.getMe();
 
