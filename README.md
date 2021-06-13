@@ -21,6 +21,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 - [Node.js](https://nodejs.org/en/)
 - [NestJS](https://nestjs.com/)
+- [Laravel](https://laravel.com/docs/8.x/installation)
 - [React Native](https://facebook.github.io/react-native/)
 - [Expo](https://expo.io/)
 
@@ -43,6 +44,17 @@ A documentação desse projeto com as funcionalidades estão especificados no No
 O modelo Entidade e Relacionamento foi criado ao utilizar o [Mermaid.js](https://mermaid-js.github.io/mermaid/) e você pode encontrá-lo [clicando aqui.](./docs/ENTITIES.md)
 
 ## :muscle: Equipe
+
+Esse projeto foi utilizado em dois Projetos Aplicados, a PA5 e PA7.
+A primeira versão foi desenvolvida em NestJS para a matéria de PA7 e a segunda foi em Laravel para a matéria de PA5.
+
+### PA5
+
+- [Vinícius Lourenço](https://github.com/H4ad)
+- [Maria Alice](https://github.com/zmariaalice)
+- [Ruziel Junior](https://github.com/ruzieljr)
+
+### PA7
 
 - [Vinícius Lourenço](https://github.com/H4ad)
 - [Otavio Ceolin](https://github.com/OtavioCeolin)
