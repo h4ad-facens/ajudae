@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Ong extends Model
+class Cause extends Model
 {
     use SoftDeletes;
 
@@ -15,12 +15,10 @@ class Ong extends Model
      * @var array
      */
     protected $fillable = [
-        'color',
-        'image',
-        'name',
-        'email',
-        'whatsapp',
-        'userId',
+        'categories',
+        'description',
+        'expiresAt',
+        'ongId',
     ];
 
     /**
@@ -43,7 +41,7 @@ class Ong extends Model
      * @var array
      */
     protected $guarded = [
-        'userId',
+        'ongId',
     ];
 
     /**
@@ -51,21 +49,15 @@ class Ong extends Model
      *
      * @var array
      */
-    protected $casts = [];
+    protected $casts = [
+        'expiresAt' => 'datetime',
+    ];
 
     /**
-     * Get the user that owns the ong.
+     * Get the ong that owns the cause.
      */
-    public function user()
+    public function ong()
     {
-        return $this->belongsTo(User::class, 'userId', 'id');
-    }
-
-    /**
-     * Get the causes of the ong.
-     */
-    public function causes()
-    {
-        return $this->hasMany(Cause::class, 'ongId', 'id');
+        return $this->belongsTo(Ong::class, 'ongId', 'id');
     }
 }

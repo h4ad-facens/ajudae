@@ -8,6 +8,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\ErrorHandler\Error\FatalError;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -61,8 +62,15 @@ class Handler extends ExceptionHandler
     {
         $exception = $this->prepareException($exception);
 
+        Log::debug($exception);
+        Log::debug(json_encode($exception));
+
         if ($exception instanceof HttpResponseException) {
             return $exception->getResponse();
+        }
+
+        if ($exception instanceof FatalError) {
+            return $exception->getError();
         }
 
         if ($exception instanceof AuthenticationException) {
@@ -86,28 +94,27 @@ class Handler extends ExceptionHandler
 
         $response = [];
 
+        $response['message'] = $exception->getMessage();
+
         switch ($statusCode) {
             case 401:
-                $response['message'] = 'Unauthorized';
+                $response['error'] = 'Unauthorized';
                 break;
             case 403:
-                $response['message'] = 'Forbidden';
+                $response['error'] = 'Forbidden';
                 break;
             case 404:
-                $response['message'] = 'Not Found';
+                $response['error'] = 'Not Found';
                 break;
             case 405:
-                $response['message'] = 'Method Not Allowed';
+                $response['error'] = 'Method Not Allowed';
                 break;
             case 422:
-                $response['message'] = $exception->original['message'];
+                $response['error'] = $exception->original['message'];
                 $response['errors'] = $exception->original['errors'];
                 break;
             default:
-                $response['message'] = ($statusCode == 500) ? 'Whoops, looks like something went wrong' : $exception->getMessage();
-
-                if (config('app.debug'))
-                    $response['error'] = $exception->getMessage();
+                $response['error'] = ($statusCode == 500) ? 'Whoops, looks like something went wrong' : $exception->getMessage();
 
                 break;
         }

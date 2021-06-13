@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddOngEntity extends Migration
+class AddCauseEntity extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class AddOngEntity extends Migration
      */
     public function up()
     {
-        Schema::create('ongs', function (Blueprint $table) {
+        Schema::create('causes', function (Blueprint $table) {
             $table->id();
-            $table->string('color');
-            $table->longText('image');
-            $table->string('name');
-            $table->string('email');
-            $table->string('whatsapp');
-            $table->integer('userId');
+            $table->string('categories');
+            $table->longText('description');
+            $table->timestamp('expiresAt');
+            $table->integer('ongId');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -33,6 +31,6 @@ class AddOngEntity extends Migration
      */
     public function down()
     {
-        Schema::drop('ongs');
+        Schema::drop('causes');
     }
 }
